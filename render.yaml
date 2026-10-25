@@ -1,0 +1,30 @@
+# Render Blueprint voor Thinkwave: een webservice en een eigen PostgreSQL-database.
+# Geheimen worden door Render gegenereerd of in het dashboard ingevuld, nooit hier.
+services:
+  - type: web
+    name: thinkwave
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    healthCheckPath: /healthz
+    autoDeploy: false
+    preDeployCommand: flask --app wsgi db upgrade
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: thinkwave-db
+          property: connectionString
+      - key: TRUSTED_HOSTS
+        sync: false
+
+databases:
+  - name: thinkwave-db
+    databaseName: thinkwave
+    user: thinkwave_user
+    plan: basic-256mb
+    region: frankfurt
+    ipAllowList: []
