@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Thinkwave{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 28rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input { width: 100%; padding: .5rem; box-sizing: border-box; }
+    button { margin-top: 1.5rem; padding: .6rem 1rem; }
+    .error { color: #b00020; }
+    .notice { color: #1b5e20; }
+  </style>
+</head>
+<body>
+  <main>
+    {% for message in get_flashed_messages() %}
+      <p class="notice" role="status">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

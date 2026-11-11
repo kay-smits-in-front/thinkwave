@@ -6,6 +6,7 @@ from flask import Flask
 from app.config import build_config
 from app.extensions import db, migrate
 from app.health import health_blueprint
+from app.registration_views import registration_blueprint
 
 
 def create_app(overrides: Mapping[str, object] | None = None) -> Flask:
@@ -20,4 +21,5 @@ def create_app(overrides: Mapping[str, object] | None = None) -> Flask:
     migrate.init_app(app, db)
 
     app.register_blueprint(health_blueprint)
+    app.register_blueprint(registration_blueprint)
     return app
