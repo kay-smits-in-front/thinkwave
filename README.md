@@ -23,6 +23,18 @@ flask --app wsgi db upgrade
 flask --app wsgi run
 ```
 
+Op Windows (PowerShell):
+
+```powershell
+py -3.13 -m venv .venv; .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+flask --app wsgi db upgrade
+flask --app wsgi run
+```
+
+`.env` wordt door `python-dotenv` ingelezen bij elk `flask`-commando.
+
 ## Tests
 
 ```bash
