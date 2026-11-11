@@ -4,21 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Thinkwave{% endblock %}</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 28rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
-    label { display: block; margin-top: 1rem; font-weight: 600; }
-    input { width: 100%; padding: .5rem; box-sizing: border-box; }
-    button { margin-top: 1.5rem; padding: .6rem 1rem; }
-    .error { color: #b00020; }
-    .notice { color: #1b5e20; }
-  </style>
+  <meta name="description" content="{% block description %}Thinkwave is de AI-innovatietool. Develop AI projects. Develop with AI.{% endblock %}">
+  <meta name="theme-color" content="#082235">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='brand/logo-red.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/thinkwave.css') }}">
 </head>
 <body>
-  <main>
-    {% for message in get_flashed_messages() %}
-      <p class="notice" role="status">{{ message }}</p>
-    {% endfor %}
-    {% block content %}{% endblock %}
-  </main>
+  <a class="skip-link" href="#main">Naar de inhoud</a>
+  {% block body %}{% endblock %}
 </body>
 </html>

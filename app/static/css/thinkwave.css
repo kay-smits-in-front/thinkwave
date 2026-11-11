@@ -1,0 +1,227 @@
+/* Thinkwave-huisstijl, afgeleid van het platform. Kleuren en maten alleen via deze tokens. */
+:root {
+  --ocean: #1d3e58;          /* achtergrond met golven */
+  --navy: #082235;           /* tekst, donkere knop */
+  --navy-soft: #3a5163;
+  --red: #ff0000;            /* knop en accent */
+  --red-hover: #e00000;
+  --red-logo: #e00000;       /* logoblok */
+  --red-text: #b30000;
+  --white: #ffffff;
+  --line: #cfd6dd;
+
+  /* Fasekleuren van het bord */
+  --research: #00c2f0;
+  --ideation: #ffc400;
+  --development: #18e07a;
+  --business: #ff4d4d;
+
+  --font-heading: "Montserrat", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  --radius: 8px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --fast: 160ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { color-scheme: light; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ocean) url("../brand/waves-bg.svg") center / 500px 400px repeat;
+  color: var(--navy);
+  font: 400 16px/1.55 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+h1 {
+  margin: 0;
+  font: 800 28px/1.1 var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: .01em;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -100px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--white);
+  color: var(--navy);
+  z-index: 10;
+}
+.skip-link:focus { top: var(--space-3); }
+
+:focus-visible {
+  outline: 3px solid var(--research);
+  outline-offset: 3px;
+}
+
+/* ---------- Kolom in het midden, zoals het startscherm ---------- */
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--space-6) var(--space-3);
+}
+
+.stage > * { width: 100%; max-width: 420px; }
+
+.logo-block {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-5) var(--space-4);
+  background: var(--red-logo);
+  border-radius: var(--radius);
+}
+.logo-block img { width: 220px; }
+
+.tagline { text-align: center; color: var(--white); }
+
+.tagline__eyebrow {
+  margin: 0 0 var(--space-2);
+  font: 700 13px/1 var(--font-heading);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+.tagline__slogan {
+  margin: 0;
+  text-wrap: balance;
+  font: 800 24px/1.2 var(--font-heading);
+}
+
+.phases {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: var(--space-2) var(--space-3);
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.phases li { display: flex; align-items: center; gap: var(--space-2); }
+.phases li::before {
+  content: "";
+  width: 12px;
+  height: 14px;
+  background: var(--phase);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.phases .research { --phase: var(--research); }
+.phases .ideation { --phase: var(--ideation); }
+.phases .development { --phase: var(--development); }
+.phases .business { --phase: var(--business); }
+
+.card {
+  padding: var(--space-5) var(--space-4);
+  background: var(--white);
+  border-radius: var(--radius);
+}
+
+.card__lead { margin: var(--space-2) 0 var(--space-4); color: var(--navy-soft); }
+
+/* ---------- Formulier ---------- */
+
+.field + .field { margin-top: var(--space-4); }
+
+.field label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.field__hint {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: 14px;
+  color: var(--navy-soft);
+}
+
+.field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--space-3);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--navy);
+  font: inherit;
+  transition: border-color var(--fast) var(--ease);
+}
+.field input:hover { border-color: var(--navy-soft); }
+.field input:focus-visible { outline-offset: 0; border-color: var(--navy); }
+
+/* Knoptekst 20px vet = 'grote tekst', daarmee haalt wit op rood het contrast. */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  margin-top: var(--space-5);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: var(--white);
+  font: 800 20px/1 var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  cursor: pointer;
+  transition: background-color var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.button:hover { background: var(--red-hover); transform: translateY(-1px); }
+.button:active { transform: translateY(1px); }
+
+.message {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  border-left: 4px solid currentColor;
+  border-radius: var(--radius);
+  font-weight: 500;
+}
+.message--error { color: var(--red-text); background: #fff1f1; }
+.message--notice { color: var(--navy); background: #e6f8fd; }
+
+/* ---------- Binnenkomst, één keer bij laden ---------- */
+
+[data-enter] { animation: enter 600ms var(--ease) both; }
+@keyframes enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 480px) {
+  .stage { padding-top: var(--space-4); gap: var(--space-3); }
+  .logo-block { padding: var(--space-4); }
+  .logo-block img { width: 160px; }
+  .tagline__slogan { font-size: 20px; }
+  .phases { grid-template-columns: repeat(2, auto); }
+}

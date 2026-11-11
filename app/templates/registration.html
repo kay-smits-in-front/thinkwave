@@ -2,26 +2,56 @@
 
 {% block title %}Account aanmaken – Thinkwave{% endblock %}
 
-{% block content %}
-  <h1>Account aanmaken</h1>
+{% block body %}
+<div class="stage">
+  <header class="logo-block" data-enter>
+    <img src="{{ url_for('static', filename='brand/logo-white.png') }}" alt="Thinkwave" width="600" height="272">
+  </header>
 
-  {% if error %}
-    <p class="error" role="alert">{{ error }}</p>
-  {% endif %}
+  <div class="tagline" data-enter>
+    <p class="tagline__eyebrow">AI-innovatietool</p>
+    <p class="tagline__slogan">Develop AI projects.<br>Develop with AI.</p>
+    <ul class="phases" aria-label="Fasen van het bord">
+      <li class="research">Research</li>
+      <li class="ideation">Ideation</li>
+      <li class="development">Development</li>
+      <li class="business">Business</li>
+    </ul>
+  </div>
 
-  <form method="post" action="{{ url_for('registration.submit_registration') }}">
-    <label for="organisation_name">Naam organisatie</label>
-    <input id="organisation_name" name="organisation_name" required maxlength="120"
-           value="{{ form.organisation_name or '' }}" autocomplete="organization">
+  <main id="main" class="card">
+    <h1>Account aanmaken</h1>
+    <p class="card__lead">Maak een account voor je organisatie. Jij wordt beheerder en kunt daarna je team toevoegen.</p>
 
-    <label for="email">E-mailadres</label>
-    <input id="email" name="email" type="email" required maxlength="254"
-           value="{{ form.email or '' }}" autocomplete="email">
+    {% for message in get_flashed_messages() %}
+      <p class="message message--notice" role="status">{{ message }}</p>
+    {% endfor %}
+    {% if error %}
+      <p class="message message--error" role="alert">{{ error }}</p>
+    {% endif %}
 
-    <label for="password">Wachtwoord (minimaal 12 tekens)</label>
-    <input id="password" name="password" type="password" required minlength="12"
-           autocomplete="new-password">
+    <form method="post" action="{{ url_for('registration.submit_registration') }}">
+      <div class="field">
+        <label for="organisation_name">Naam organisatie</label>
+        <input id="organisation_name" name="organisation_name" required maxlength="120"
+               value="{{ form.organisation_name or '' }}" autocomplete="organization">
+      </div>
 
-    <button type="submit">Account aanmaken</button>
-  </form>
+      <div class="field">
+        <label for="email">E-mailadres</label>
+        <input id="email" name="email" type="email" required maxlength="254"
+               value="{{ form.email or '' }}" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="password">Wachtwoord</label>
+        <input id="password" name="password" type="password" required minlength="12"
+               autocomplete="new-password" aria-describedby="password-hint">
+        <span class="field__hint" id="password-hint">Minimaal 12 tekens.</span>
+      </div>
+
+      <button class="button" type="submit">Account aanmaken</button>
+    </form>
+  </main>
+</div>
 {% endblock %}

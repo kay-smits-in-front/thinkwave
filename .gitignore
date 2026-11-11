@@ -4,3 +4,8 @@ __pycache__/
 .pytest_cache/
 .venv/
 instance/
+
+# Skills staan lokaal of globaal geinstalleerd, niet in de repo
+.claude/skills/
+skills-lock.json
+.taste-skill/
