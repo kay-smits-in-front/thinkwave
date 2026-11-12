@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "skills": {
+    "whatsapp-chat-export": {
+      "source": "rosroyros/awesome-whatsapp-mcp",
+      "sourceType": "github",
+      "skillPath": "skills/whatsapp-chat-export/SKILL.md",
+      "computedHash": "d92c62398a9604cb56cd57187b84db0ac1840fabbe865440f6fff09eabf6ee8d"
+    }
+  }
+}
