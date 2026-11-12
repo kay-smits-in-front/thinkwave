@@ -15,9 +15,9 @@ def test_registration_creates_organisation_with_admin(app):
     assert user.check_password(PASSWORD)
 
 
-def test_new_organisation_has_no_plan_yet(app):
+def test_new_organisation_starts_on_free_ten_seat_plan(app):
     user = register_owner("Acme", "a@example.com", PASSWORD)
-    assert user.organisation.plan is None
+    assert user.organisation.seat_limit() == 10
 
 
 @pytest.mark.parametrize(

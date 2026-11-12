@@ -3,7 +3,7 @@
 from sqlalchemy import select
 
 from app.extensions import db
-from app.models import Organisation, Role, User
+from app.models import Organisation, Plan, Role, User
 from app.models.user import normalise_email
 
 
@@ -21,7 +21,7 @@ def register_owner(organisation_name: str, email: str, password: str) -> User:
     if db.session.scalar(select(User).filter_by(email=normalise_email(email))):
         raise RegistrationError("Er bestaat al een account met dit e-mailadres.")
 
-    organisation = Organisation(name=name)
+    organisation = Organisation(name=name, plan=Plan.TEN)  # gratis startversie: 10 accounts
     user = User(email=email, role=Role.ADMIN, organisation=organisation)
     try:
         user.set_password(password)

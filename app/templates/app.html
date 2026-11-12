@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="app" {% block app_attrs %}{% endblock %}>
+<header class="topbar">
+  <a class="topbar__logo" href="{{ url_for('projects.list_projects') }}">
+    <img src="{{ url_for('static', filename='brand/logo-white.png') }}" alt="Thinkwave – naar projecten" width="600" height="272">
+  </a>
+  <nav class="topbar__nav" aria-label="Hoofdmenu">
+    <a href="{{ url_for('projects.list_projects') }}">Projecten</a>
+    {% if g.user.role.value == 'admin' %}
+      <a href="{{ url_for('admin.list_accounts') }}">Accounts</a>
+    {% endif %}
+  </nav>
+  <form class="topbar__user" method="post" action="{{ url_for('auth.log_out') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <span>{{ g.user.email }}</span>
+    <button class="link-button" type="submit">Log uit</button>
+  </form>
+</header>
+
+<main id="main" class="page">
+  {% for message in get_flashed_messages() %}
+    <p class="message message--notice" role="status">{{ message }}</p>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "app.html" %}
+
+{% block title %}Projecten – Thinkwave{% endblock %}
+
+{% set board_labels = {'youth': 'Jeugd – leren innoveren', 'work': 'Werk – teams, zzp en makers', 'management': 'Management – innovatie invoeren'} %}
+
+{% block content %}
+<div class="two-col">
+  <section aria-labelledby="projects-title">
+    <h1 id="projects-title">Projecten</h1>
+    {% if projects %}
+      <ul class="project-list">
+        {% for project in projects %}
+          <li>
+            <a class="project-card" href="{{ url_for('projects.show_project', project_id=project.id) }}">
+              <span class="project-card__board">{{ board_labels[project.board.value] }}</span>
+              <span class="project-card__name">{{ project.name }}</span>
+              <span class="project-card__meta">{{ project.steps|length }} stappen gezet</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">Nog geen projecten. Start er een met het formulier.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel" aria-labelledby="new-title">
+    <h2 id="new-title">Start een project</h2>
+    <form method="post" action="{{ url_for('projects.create_project') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="name">Naam</label>
+        <input id="name" name="name" required maxlength="120">
+      </div>
+      <div class="field">
+        <label for="goal">Wat wil je vernieuwen?</label>
+        <textarea id="goal" name="goal" rows="3" maxlength="2000"></textarea>
+      </div>
+      <fieldset class="field">
+        <legend>Bord</legend>
+        {% for board in boards %}
+          <label class="choice">
+            <input type="radio" name="board" value="{{ board.value }}" {% if board.value == 'work' %}checked{% endif %}>
+            {{ board_labels[board.value] }}
+          </label>
+        {% endfor %}
+      </fieldset>
+      <button class="button" type="submit">Start project</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

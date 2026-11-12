@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Inloggen – Thinkwave{% endblock %}
+
+{% block body %}
+<div class="stage">
+  {% include "_brand.html" %}
+
+  <main id="main" class="card">
+    <h1>Inloggen</h1>
+    <p class="card__lead">Log in met je e-mailadres. Geen projectcode meer nodig.</p>
+
+    {% if error %}
+      <p class="message message--error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('auth.submit_login', next=request.args.get('next')) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="email">E-mailadres</label>
+        <input id="email" name="email" type="email" required value="{{ email }}" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="password">Wachtwoord</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password">
+      </div>
+      <button class="button" type="submit">Log in</button>
+    </form>
+    <p class="card__switch">Nog geen account? <a href="{{ url_for('registration.show_registration_form') }}">Maak er een aan</a></p>
+  </main>
+</div>
+{% endblock %}

@@ -4,33 +4,18 @@
 
 {% block body %}
 <div class="stage">
-  <header class="logo-block" data-enter>
-    <img src="{{ url_for('static', filename='brand/logo-white.png') }}" alt="Thinkwave" width="600" height="272">
-  </header>
-
-  <div class="tagline" data-enter>
-    <p class="tagline__eyebrow">AI-innovatietool</p>
-    <p class="tagline__slogan">Develop AI projects.<br>Develop with AI.</p>
-    <ul class="phases" aria-label="Fasen van het bord">
-      <li class="research">Research</li>
-      <li class="ideation">Ideation</li>
-      <li class="development">Development</li>
-      <li class="business">Business</li>
-    </ul>
-  </div>
+  {% include "_brand.html" %}
 
   <main id="main" class="card">
     <h1>Account aanmaken</h1>
     <p class="card__lead">Maak een account voor je organisatie. Jij wordt beheerder en kunt daarna je team toevoegen.</p>
 
-    {% for message in get_flashed_messages() %}
-      <p class="message message--notice" role="status">{{ message }}</p>
-    {% endfor %}
     {% if error %}
       <p class="message message--error" role="alert">{{ error }}</p>
     {% endif %}
 
     <form method="post" action="{{ url_for('registration.submit_registration') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="field">
         <label for="organisation_name">Naam organisatie</label>
         <input id="organisation_name" name="organisation_name" required maxlength="120"
@@ -52,6 +37,7 @@
 
       <button class="button" type="submit">Account aanmaken</button>
     </form>
+    <p class="card__switch">Heb je al een account? <a href="{{ url_for('auth.show_login') }}">Log in</a></p>
   </main>
 </div>
 {% endblock %}

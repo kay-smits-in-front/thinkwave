@@ -8,7 +8,7 @@ services:
     region: frankfurt
     healthCheckPath: /healthz
     autoDeploy: false
-    preDeployCommand: flask --app wsgi db upgrade
+    preDeployCommand: flask --app wsgi db upgrade && flask --app wsgi seed
     envVars:
       - key: APP_ENV
         value: production

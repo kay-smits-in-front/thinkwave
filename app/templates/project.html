@@ -1,0 +1,261 @@
+{% extends "app.html" %}
+
+{% block title %}{{ project.name }} – Thinkwave{% endblock %}
+{% block app_attrs %}data-board="{{ project.board.value }}"{% endblock %}
+
+{% set tab_labels = {'bord': 'Bord', 'logboek': 'Logboek', 'ideeen': 'Ideeën en verslagen', 'checklist': 'Checklist', 'metingen': 'Metingen'} %}
+{% set measure_labels = {'ideas': 'Ideeën gegenereerd', 'budget': 'Budget binnengehaald (€)', 'problems_solved': 'Problemen opgelost', 'research_hours': 'Onderzoek gedaan (uur)', 'people_spoken': 'Mensen gesproken', 'interns_hired': 'Stagiairs aangenomen', 'other': 'Overig'} %}
+{% set impact_labels = {'low': 'Laag', 'medium': 'Gemiddeld', 'high': 'Hoog'} %}
+
+{% block content %}
+<header class="project-head">
+  <div>
+    <p class="eyebrow">{{ {'youth': 'Jeugdbord', 'work': 'Werkbord', 'management': 'Managementbord'}[project.board.value] }}</p>
+    <h1>{{ project.name }}</h1>
+    {% if project.goal %}<p class="project-head__goal">{{ project.goal }}</p>{% endif %}
+  </div>
+  <div class="timeline" aria-label="Tijdlijn">
+    <span class="timeline__label">Maand {{ (weeks_used / project.total_weeks * 24)|round(0, 'ceil')|int }} van 24</span>
+    <div class="timeline__bar">
+      {% for step in project.steps %}
+        <span class="timeline__step {{ step.action.phase.value }}" style="width: {{ step.duration_weeks / project.total_weeks * 100 }}%" title="{{ step.action.name }}"></span>
+      {% endfor %}
+      {% for quarter in [25, 50, 75] %}<span class="timeline__mark" style="left: {{ quarter }}%"></span>{% endfor %}
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Onderdelen van het project">
+  {% for key in tab_labels %}
+    <a href="{{ url_for('projects.show_project', project_id=project.id, tab=key) }}" {% if tab == key %}aria-current="page"{% endif %}>{{ tab_labels[key] }}</a>
+  {% endfor %}
+</nav>
+
+{% if tab == 'bord' %}
+<div class="board-layout">
+  <section class="board" aria-label="Bord">
+    {% for phase in phases %}
+      <div class="quadrant {{ phase.value }}">
+        <div class="quadrant__head">
+          <h2>{{ phase.value|capitalize }}</h2>
+          <span class="quadrant__impact">{{ impacts[phase]|round|int }}%</span>
+        </div>
+        <div class="meter" role="meter" aria-label="Impact {{ phase.value }}" aria-valuenow="{{ impacts[phase]|round|int }}" aria-valuemin="0" aria-valuemax="100">
+          <span style="width: {{ impacts[phase] }}%"></span>
+        </div>
+        <ul class="hexes">
+          {% for action in actions if action.phase == phase %}
+            {% set left = uses_left(action) %}
+            <li>
+              <a class="hex {% if left <= 0 %}is-used{% endif %} {% if selected and selected.id == action.id %}is-selected{% endif %}"
+                 href="{{ url_for('projects.show_project', project_id=project.id, actie=action.id) }}"
+                 hx-push-url="false" hx-select=".board-layout" hx-target=".board-layout" hx-swap="outerHTML">
+                <span class="hex__name">{{ action.name }}</span>
+                <span class="hex__uses">{{ left }}/{{ action.max_uses }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </section>
+
+  <aside class="side">
+    {% if ending %}
+      <section class="panel panel--feature">
+        <p class="eyebrow">Einde tijdlijn</p>
+        <h2>{{ ending.title }}</h2>
+        <p>{{ ending.text }}</p>
+        <a class="button button--secondary" href="{{ url_for('projects.show_project', project_id=project.id, tab='logboek') }}">Beoordeel je stappen</a>
+      </section>
+    {% endif %}
+
+    {% if selected %}
+      {% set left = uses_left(selected) %}
+      <section class="panel action-card {{ selected.phase.value }}" aria-labelledby="action-title">
+        {% if selected.image %}<img class="action-card__photo" src="{{ url_for('static', filename='actions/' ~ selected.image) }}" alt="" width="421" height="215">{% endif %}
+        <p class="eyebrow">{{ selected.phase.value|capitalize }}</p>
+        <h2 id="action-title">{{ selected.name }}</h2>
+        <p>{{ selected.description }}</p>
+        <dl class="facts">
+          <div><dt>Duur</dt><dd>{{ selected.duration_weeks }} weken</dd></div>
+          <div><dt>Impact</dt><dd>{{ impact_labels.get(selected.impact, selected.impact) }}</dd></div>
+          <div><dt>Nu waard</dt><dd>+{{ expected(selected) }}%</dd></div>
+          <div><dt>Beurten over</dt><dd>{{ left }} van {{ selected.max_uses }}</dd></div>
+        </dl>
+        {% if selected.url %}<p><a href="{{ selected.url }}" target="_blank" rel="noopener" hx-boost="false">Meer over deze methode</a></p>{% endif %}
+        {% if can_perform(selected) %}
+          <form method="post" action="{{ url_for('projects.perform_action', project_id=project.id, action_id=selected.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="button" type="submit">Voer stap uit</button>
+          </form>
+        {% else %}
+          <p class="empty">Deze stap is op of de tijdlijn is vol.</p>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <section class="panel" aria-labelledby="suggest-title">
+      <h2 id="suggest-title">Voorgestelde stappen</h2>
+      {% if suggestions %}
+        <ol class="suggestions">
+          {% for action in suggestions %}
+            <li>
+              <a class="suggestion {{ action.phase.value }}" href="{{ url_for('projects.show_project', project_id=project.id, actie=action.id) }}"
+                 hx-push-url="false" hx-select=".board-layout" hx-target=".board-layout" hx-swap="outerHTML">
+                <span>{{ action.name }}</span><strong>+{{ expected(action) }}%</strong>
+              </a>
+            </li>
+          {% endfor %}
+        </ol>
+        <p class="hint">Op basis van waar je fasen nu staan en hoe anderen deze stappen beoordeelden.</p>
+      {% else %}
+        <p class="empty">Geen stappen meer mogelijk.</p>
+      {% endif %}
+    </section>
+
+    {% if feedback %}
+      <section class="panel" aria-labelledby="feedback-title">
+        <p class="eyebrow">Evaluatiemoment</p>
+        <h2 id="feedback-title">{{ feedback.title }}</h2>
+        <p>{{ feedback.text }}</p>
+      </section>
+    {% endif %}
+
+    <section class="panel panel--quiet" aria-labelledby="tip-title">
+      <p class="eyebrow">Tip</p>
+      <h2 id="tip-title">{{ tip.title }}</h2>
+      <p>{{ tip.text }}</p>
+    </section>
+  </aside>
+</div>
+
+{% elif tab == 'logboek' %}
+<section class="panel" aria-labelledby="log-title">
+  <h2 id="log-title">Logboek</h2>
+  <p class="hint">Leg per stap vast wat het opleverde en hoe goed het ging. Daarmee leert Thinkwave welke stappen werken.</p>
+  {% for step in project.steps %}
+    <form class="log-row {{ step.action.phase.value }}" method="post" action="{{ url_for('projects.update_step', project_id=project.id, step_id=step.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="log-row__head">
+        <strong>{{ step.action.name }}</strong>
+        <span>Week {{ step.start_week + 1 }}–{{ step.start_week + step.duration_weeks }} · +{{ step.impact_percent }}%</span>
+      </div>
+      <div class="field">
+        <label for="result-{{ step.id }}">Wat heb je gedaan en wat leverde het op?</label>
+        <textarea id="result-{{ step.id }}" name="result" rows="2" maxlength="5000">{{ step.result }}</textarea>
+      </div>
+      <div class="log-row__foot">
+        <label for="rating-{{ step.id }}">Hoe succesvol (1–5)</label>
+        <select id="rating-{{ step.id }}" name="self_rating">
+          <option value="">–</option>
+          {% for n in range(1, 6) %}<option value="{{ n }}" {% if step.self_rating == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+        </select>
+        <button class="button button--small" type="submit">Sla stap op</button>
+      </div>
+    </form>
+  {% else %}
+    <p class="empty">Nog geen stappen gezet. Kies een stap op het bord.</p>
+  {% endfor %}
+
+  <form class="log-row" method="post" action="{{ url_for('projects.rate_project', project_id=project.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="log-row__foot">
+      <label for="project-rating">Eindoordeel project (1–5)</label>
+      <select id="project-rating" name="self_rating">
+        <option value="">–</option>
+        {% for n in range(1, 6) %}<option value="{{ n }}" {% if project.self_rating == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+      </select>
+      <button class="button button--small" type="submit">Sla oordeel op</button>
+    </div>
+  </form>
+</section>
+
+{% elif tab == 'ideeen' %}
+<div class="two-col">
+  <section class="panel" aria-labelledby="notes-title">
+    <h2 id="notes-title">Ideeën en verslagen</h2>
+    {% for note in project.notes %}
+      <article class="note">
+        <p class="eyebrow">{{ 'Idee' if note.kind.value == 'idea' else 'Verslag' }} · {{ note.created_at.strftime('%d-%m-%Y') }}</p>
+        <h3>{{ note.title }}</h3>
+        {% if note.body %}<p class="note__body">{{ note.body }}</p>{% endif %}
+      </article>
+    {% else %}
+      <p class="empty">Nog niets opgeslagen.</p>
+    {% endfor %}
+  </section>
+  <section class="panel" aria-labelledby="note-new">
+    <h2 id="note-new">Schrijf iets op</h2>
+    <form method="post" action="{{ url_for('projects.add_note', project_id=project.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <fieldset class="field">
+        <legend>Soort</legend>
+        <label class="choice"><input type="radio" name="kind" value="idea" checked> Idee</label>
+        <label class="choice"><input type="radio" name="kind" value="report"> Verslag</label>
+      </fieldset>
+      <div class="field"><label for="note-title">Titel</label><input id="note-title" name="title" required maxlength="200"></div>
+      <div class="field"><label for="note-body">Tekst</label><textarea id="note-body" name="body" rows="6"></textarea></div>
+      <button class="button" type="submit">Sla op</button>
+    </form>
+  </section>
+</div>
+
+{% elif tab == 'checklist' %}
+<section class="panel" aria-labelledby="check-title">
+  <h2 id="check-title">Checklist</h2>
+  <ul class="checklist">
+    {% for item in project.checklist %}
+      <li>
+        <form method="post" action="{{ url_for('projects.toggle_checklist_item', project_id=project.id, item_id=item.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="check {% if item.done %}is-done{% endif %}" type="submit" aria-pressed="{{ 'true' if item.done else 'false' }}">
+            <span class="check__box" aria-hidden="true"></span>{{ item.text }}
+          </button>
+        </form>
+      </li>
+    {% else %}
+      <li class="empty">Nog geen punten.</li>
+    {% endfor %}
+  </ul>
+  <form class="inline-form" method="post" action="{{ url_for('projects.add_checklist_item', project_id=project.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field"><label for="check-text">Nieuw punt</label><input id="check-text" name="text" required maxlength="255"></div>
+    <button class="button button--small" type="submit">Voeg toe</button>
+  </form>
+</section>
+
+{% elif tab == 'metingen' %}
+<div class="two-col">
+  <section class="panel" aria-labelledby="measure-title">
+    <h2 id="measure-title">Metingen</h2>
+    <dl class="totals">
+      {% for kind in measure_kinds %}
+        {% set values = project.measurements|selectattr('kind', 'equalto', kind)|map(attribute='value')|list %}
+        {% if values %}<div><dt>{{ measure_labels[kind.value] }}</dt><dd>{{ values|sum|round(1) }}</dd></div>{% endif %}
+      {% endfor %}
+    </dl>
+    <ul class="measure-list">
+      {% for m in project.measurements %}
+        <li><span>{{ measure_labels[m.kind.value] }}{% if m.note %} – {{ m.note }}{% endif %}</span><strong>{{ m.value|round(1) }}</strong></li>
+      {% else %}
+        <li class="empty">Nog niets gemeten.</li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="panel" aria-labelledby="measure-new">
+    <h2 id="measure-new">Voeg een meting toe</h2>
+    <form method="post" action="{{ url_for('projects.add_measurement', project_id=project.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="m-kind">Wat meet je?</label>
+        <select id="m-kind" name="kind">{% for kind in measure_kinds %}<option value="{{ kind.value }}">{{ measure_labels[kind.value] }}</option>{% endfor %}</select>
+      </div>
+      <div class="field"><label for="m-value">Aantal of bedrag</label><input id="m-value" name="value" inputmode="decimal" required></div>
+      <div class="field"><label for="m-note">Toelichting</label><input id="m-note" name="note" maxlength="255"></div>
+      <button class="button" type="submit">Sla meting op</button>
+    </form>
+  </section>
+</div>
+{% endif %}
+{% endblock %}

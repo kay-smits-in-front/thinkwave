@@ -11,8 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/thinkwave.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous" defer></script>
 </head>
-<body>
+<body hx-boost="true" hx-headers='{"X-CSRF-Token": "{{ csrf_token() }}"}'>
   <a class="skip-link" href="#main">Naar de inhoud</a>
   {% block body %}{% endblock %}
 </body>

@@ -2,6 +2,7 @@
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from app.auth import log_in
 from app.registration import RegistrationError, register_owner
 
 registration_blueprint = Blueprint("registration", __name__)
@@ -21,9 +22,10 @@ def submit_registration():
         "email": request.form.get("email", ""),
     }
     try:
-        register_owner(form["organisation_name"], form["email"], request.form.get("password", ""))
+        user = register_owner(form["organisation_name"], form["email"], request.form.get("password", ""))
     except RegistrationError as error:
         return render_template("registration.html", form=form, error=str(error)), 400
 
-    flash("Je account is aangemaakt.")
-    return redirect(url_for("registration.show_registration_form"))
+    log_in(user)
+    flash("Je account is aangemaakt. Start je eerste project.")
+    return redirect(url_for("projects.list_projects"))

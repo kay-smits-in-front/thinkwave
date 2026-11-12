@@ -1,0 +1,614 @@
+{
+ "actions": [
+  {
+   "name": "Expert Interview",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "high",
+   "description": "Interviewing an expert can provide you with the information you are longing for. Stick to the rules of conducting an interview. For more help, see this link!",
+   "max_uses": 3,
+   "url": "https://www.rug.nl/language-centre/develop-yourself/academic/spreken/interviewen/",
+   "image": "1.webp"
+  },
+  {
+   "name": "Innovation Knowhow",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 50,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Boost your understanding of innovation! Books as : hollistic innovation management cover the whole past of how innovation has evolved.",
+   "max_uses": 2,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "2.webp"
+  },
+  {
+   "name": "End User Observation",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 30,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Unleash innovation by connecting with your end user! Dive into their world, observe, and gather insights firsthand—preferably away from your desk. The game of innovation begins with understanding the players.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "3.webp"
+  },
+  {
+   "name": "Review Literature",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Master the art of literature research, just like at the university. Explore what's already been studied using Google Scholar, hit the library, or collaborate with students.",
+   "max_uses": 2,
+   "url": null,
+   "image": "4.webp"
+  },
+  {
+   "name": "User Research",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 60,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Methods: A/b testing , Surveys , observation, 101 methods of design contains a wide range of options, and there is way more.",
+   "max_uses": 3,
+   "url": null,
+   "image": "5.webp"
+  },
+  {
+   "name": "Data Collection",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 40,
+   "duration_weeks": 5,
+   "impact": "low",
+   "description": "Search for data collection, and build data sets, take bigger surveys that represent a sample group.",
+   "max_uses": 2,
+   "url": null,
+   "image": "6.webp"
+  },
+  {
+   "name": "Localize and Sustainability",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 80,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Organizing entrepreneurship locally offers new entrepreneurial opportunities and can provide an original and sustainable market position. It can also be a real challenge.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "7.webp"
+  },
+  {
+   "name": "Talk to Customer",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 0,
+   "duration_weeks": 5,
+   "impact": "high",
+   "description": "On repeat: Talk to your end user!! It is one of the few success factors of innovation that has been scientifically proven.",
+   "max_uses": 3,
+   "url": null,
+   "image": "8.webp"
+  },
+  {
+   "name": "Student Research Project",
+   "phase": "research",
+   "base_percent": 5.0,
+   "sweetspot": 70,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Gather students. Reach out to educational organs and sign in for student projects, write internship opportunities and build a small team.",
+   "max_uses": 3,
+   "url": null,
+   "image": "9.webp"
+  },
+  {
+   "name": "Ecosystem Mapping",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 70,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Mapping your network and gathering insight into your reach.",
+   "max_uses": 1,
+   "url": null,
+   "image": "10.webp"
+  },
+  {
+   "name": "Brainstorming",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Weighing the power of your idea can only be done if you have chosen it from a set of possible options. Brainstorming comes with rules. Organize it with at least 4 players and stimulate each other. See",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "11.webp"
+  },
+  {
+   "name": "Open Innovation",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 50,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Building together will get you further. Look for opportunities to cooperate with already existing market players. quick and interesting read: Henry W. Chesborough , Why companies should have open business models.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "12.webp"
+  },
+  {
+   "name": "Hackathon",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 60,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Go bigger! Try to find a big group of creative and specialised people with different backgrounds. Use methods, long breaks, brainfood, inspiration and everything you can think of to end up with a creative and new concept for your organistion.",
+   "max_uses": 2,
+   "url": null,
+   "image": "13.webp"
+  },
+  {
+   "name": "Biomimicry",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 90,
+   "duration_weeks": 5,
+   "impact": "high",
+   "description": "Using biomimicry within your organisation could be your whole organisation. This can be very difficult extensive but also you can make it small. Look at nature and animals and find ways to copy the intelligence to implement it in your organisation.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "14.webp"
+  },
+  {
+   "name": "7th Generation Storm",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 80,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Look 7 generations ahead. Long term existense is gained by thinking about the future and looking far ahead. Imagine everything 7 generathions in to the future. An American way of organizing!",
+   "max_uses": 1,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "15.webp"
+  },
+  {
+   "name": "4 Lenses of Innovation",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 30,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Examine the innovation on the four lenses to get a feeling about the worth. Feasability, Viability, Desarability, Sustainability.",
+   "max_uses": 2,
+   "url": null,
+   "image": "16.webp"
+  },
+  {
+   "name": "Co-Creation Session",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "co-creation is hot topic, designing together, draw solutions, situations, problems and so on. Create new insight and visualize to see your potential!",
+   "max_uses": 3,
+   "url": null,
+   "image": "17.webp"
+  },
+  {
+   "name": "Brainwriting",
+   "phase": "ideation",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "It is a well known and working brainstorm technique, also known as 6-3-5 method, to generate a lot of ideas.",
+   "max_uses": 3,
+   "url": null,
+   "image": "18.webp"
+  },
+  {
+   "name": "Launching Tested End-Product",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 90,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "launch the tested final product. The aim is to have a definitive product that could go to market or that could be used to obtain financing.",
+   "max_uses": 1,
+   "url": null,
+   "image": "19.webp"
+  },
+  {
+   "name": "Concept Drawing",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Drawing is fun! Draw the concept so that it becomes clear what an MVP should look like.",
+   "max_uses": 2,
+   "url": null,
+   "image": "20.webp"
+  },
+  {
+   "name": "Building MVP 1",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Build it with Lego, have it 3D printed, create a low-code website. Make sure there is something 'tangible'.",
+   "max_uses": 2,
+   "url": null,
+   "image": "21.webp"
+  },
+  {
+   "name": "Building MVP 2",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 70,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Build a new and improved concept. Improved is, new lay out, beter fit, cheaper, adapted to test results.",
+   "max_uses": 2,
+   "url": null,
+   "image": "22.webp"
+  },
+  {
+   "name": "Test Preparation",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 50,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Prepare what you want to test in your MVP. reach out to your test group as quick as possible and prepare for non-response and all kind of situations. Strategyzer offers helpful tools.",
+   "max_uses": 2,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "23.webp"
+  },
+  {
+   "name": "Reaching Out to Test Group",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 40,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Approach the test group, make sure you start looking for the end user in time. It can be time-consuming to find respondents.",
+   "max_uses": 2,
+   "url": null,
+   "image": "24.webp"
+  },
+  {
+   "name": "Testing",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Test, test, test! Use appropriate test methods.",
+   "max_uses": 3,
+   "url": null,
+   "image": "25.webp"
+  },
+  {
+   "name": "Concept Testing Week",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 60,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "It can be a very valuable and insightfull thing to divide your attention onto one subject for a whole week",
+   "max_uses": 1,
+   "url": null,
+   "image": "26.webp"
+  },
+  {
+   "name": "Concept Testing with End User",
+   "phase": "development",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Test again and ensure that relevant end users are now involved in the tests.",
+   "max_uses": 3,
+   "url": null,
+   "image": "27.webp"
+  },
+  {
+   "name": "Dragons Den",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 70,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Pitch! Trust your story. Share your idea and get financing to go to market.",
+   "max_uses": 1,
+   "url": null,
+   "image": "28.webp"
+  },
+  {
+   "name": "Scenario Planning",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 80,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Try to imagine some realistic scenarios. Do this by taking 2 extremes. It's going to be a success. And it's going to fail, I'm going to do this by outsourcing everything, and I'm going to do this by doing everything internally. This can hel you make decisions and prepare for the future.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "29.webp"
+  },
+  {
+   "name": "First Customer",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Love your problem and not your solution. The first customers are the ones who have experienced the struggle which you are solving. Look for ways to find your first customer and find the target groiup during this phase.",
+   "max_uses": 2,
+   "url": null,
+   "image": "30.webp"
+  },
+  {
+   "name": "Innovation Management",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 50,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Strategyzer innovation management. Use strategyzer's tools to manage and maintain innovation in your organization. This model was created for large organizations but can also be used for SMEs with some minor changes.",
+   "max_uses": 2,
+   "url": null,
+   "image": "31.webp"
+  },
+  {
+   "name": "Employee Search",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 60,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "You have something to offer! Approach colleges and students to collaborate on your innovation. Reach out to your network and gather people who believe as much as you do.",
+   "max_uses": 3,
+   "url": null,
+   "image": "32.webp"
+  },
+  {
+   "name": "Reach Out to Network",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 10,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Keep using your network. Approach old contacts and try to do as much together as possible. Don't be afraid of being rejected and continue to live in the network as much as possible.",
+   "max_uses": 3,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "33.webp"
+  },
+  {
+   "name": "Build a Website",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 20,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Build your own website or outsource it, it offers a kind of trust point for both you and your customer or future customer. This is a home base for your company.",
+   "max_uses": 2,
+   "url": null,
+   "image": "34.webp"
+  },
+  {
+   "name": "Kickstarter",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 0,
+   "duration_weeks": 5,
+   "impact": "high",
+   "description": "Upload rour idea/plan and collect capital, please note that there must be a constructive plan to get started with capital.",
+   "max_uses": 2,
+   "url": "https://www.thinkwave.nl/info-wave",
+   "image": "35.webp"
+  },
+  {
+   "name": "Business Plan",
+   "phase": "business",
+   "base_percent": 5.0,
+   "sweetspot": 0,
+   "duration_weeks": 5,
+   "impact": "medium",
+   "description": "Write a concrete market and price placing and future proof business plan.",
+   "max_uses": 2,
+   "url": null,
+   "image": "36.webp"
+  }
+ ],
+ "intermissions": [
+  {
+   "number": 1,
+   "phase": "research",
+   "threshold": 20,
+   "title": "Make sure you are aware of the facts a bit more!",
+   "text": "Make sure enough reseaerch has been done. This offers guidance during development and ideation processes. Starting without research most of the time leads to deception and short term visioning. Research can be a lot. Reaching out to your network and talking to someone about the idea can already be enough to recieve feedback."
+  },
+  {
+   "number": 1,
+   "phase": "ideation",
+   "threshold": 15,
+   "title": "Make sure to ideate and have a set of ideas, if there is no resistence it is not good enough!",
+   "text": "Ideating and really putting effort into generating ideas offers a trustworthy idea to start developing and reaching out to your network. Choosing from a set of options is crucial to be able to look back and say. We did it consiously and why? This should boost your confidence."
+  },
+  {
+   "number": 1,
+   "phase": "development",
+   "threshold": 15,
+   "title": "No big deal!",
+   "text": "It is not a very big problem that you have not starting developing yet! great to see you already spent time ideating and have a basis of research."
+  },
+  {
+   "number": 1,
+   "phase": "business",
+   "threshold": 10,
+   "title": "You are doing great!",
+   "text": "If you want to challenge yourself even more. Where do you find the most resistence, that is what you will do next week! If the concept is already standing, can you already think a head a bit more. Start looking in your network for people to learn from, hard learning happens when it really needs to happen. it is your time to set an extra step and reach out to the people you want to reach!"
+  },
+  {
+   "number": 1,
+   "phase": null,
+   "threshold": 20,
+   "title": "Doing everying thing parallel is very sweet and offers you a fast and learningfull process!",
+   "text": "If you want to challenge yourself even more. Where do you find the most resistence, that is what you will do next week! If the concept is already standing, can you already think a head a bit more. organize a extra brainstorm on top of the idea on how to make it fit in an international context or 7 generations ahead!"
+  },
+  {
+   "number": 2,
+   "phase": "research",
+   "threshold": 50,
+   "title": "Research is crucial",
+   "text": "Research is crucial to understanding the societal problem you are facing and building op a database of knowledge on how to cope with this problem, and most often what does not work and what already has been done. This will set you off with a framework of , conditions, insights and opportunitie directions."
+  },
+  {
+   "number": 2,
+   "phase": "ideation",
+   "threshold": 50,
+   "title": "Looking at a problem from different angels offers you different insights",
+   "text": "Ford send his employee's home and told every employee it has to come back with an idea before starting work again. Creativity is crucial to build a new and distinctive cooperation which contributes to a future resilent world. Make sure you spend enough attention on generating ideas. Challenge yourself and invite an expert to your brainstorm or creation moment."
+  },
+  {
+   "number": 2,
+   "phase": "development",
+   "threshold": 50,
+   "title": "Building and making is fun!",
+   "text": "if you put all your resources in creativity or research. Most of the time this leads to ideas and text which are unfortunately not being followed up. Building and making things visual offers."
+  },
+  {
+   "number": 2,
+   "phase": "business",
+   "threshold": 40,
+   "title": "Doing business a little bit more",
+   "text": "Arranging financing delivers you trust and space to entrepeneur and innovate more. To do this you will have to convince people or make it public to where your own circle reaches. A concept is just a concept, to make impact you should be acting within the outside world."
+  },
+  {
+   "number": 2,
+   "phase": null,
+   "threshold": 40,
+   "title": "On the right track!",
+   "text": "Your extra chances because you are doing such a good job! pay attention to actions that make your company more safe for changes in the future. Scenarioplanning, 7th generation brainstorming, open innovation, localize and sustainability. These are some of our tips which if you pay attention to these subjects it will make you more resilient than whoevere is doing the same thing and is not paying attetntio to it."
+  },
+  {
+   "number": 3,
+   "phase": "business",
+   "threshold": 75,
+   "title": "Go to market, start your comnpany, keep innovating your proces and keep looking forward",
+   "text": "There is no impact made until your first user is able use whatever you have been working on. This does not even has to bes the best working thing but it has to be desired."
+  },
+  {
+   "number": 3,
+   "phase": "ideation",
+   "threshold": 75,
+   "title": "Ideation is important through the whole process",
+   "text": "Do more specialised ideation things, try to spend time thinking about local or durable organisation and gettting extra speciialised ideas from nature."
+  },
+  {
+   "number": 3,
+   "phase": "development",
+   "threshold": 75,
+   "title": "Build measure learn",
+   "text": "Open innovation canb stimulate building and reduce costs. Working together will bring you further and you will not be caught u[p if you work together with the players in the market. This together building can be exiting and straining but is worth the effort."
+  },
+  {
+   "number": 3,
+   "phase": "research",
+   "threshold": 75,
+   "title": "Low research can be compensated when you are iterativele working with your end user",
+   "text": "The most improtant is real data, it has to be desired by nature, by humans it does not have to work yet and it can still requiere a lot of work but at least you should hounestly know what a potential end user wants."
+  },
+  {
+   "number": 3,
+   "phase": null,
+   "threshold": 75,
+   "title": "Yes, Yes, Yes !",
+   "text": "You hit the sweet spot. there is a sweetspot in the program based on succesfull innovation projects and you did very well! keep going!"
+  }
+ ],
+ "endings": [
+  {
+   "phase": "research",
+   "threshold": 70,
+   "title": "JOB WELL DONE!",
+   "header": "If you feal resistence your on the right track!",
+   "text": "Your dedication to innovation is admirable. Let this passion continue to propel you to new heights because the world needs pioneers like you to keep pushing the boundaries."
+  },
+  {
+   "phase": "ideation",
+   "threshold": 70,
+   "title": "JOB WELL DONE!",
+   "header": "If you feal resistence your on the right track!",
+   "text": "You've pushed the boundaries of creativity, with ideas that are changing the world. Keep dreaming, keep experimenting, and let your imagination lead the way to even greater breakthroughs."
+  },
+  {
+   "phase": "development",
+   "threshold": 70,
+   "title": "JOB WELL DONE!",
+   "header": "If you feal resistence your on the right track!",
+   "text": "From concept to reality, you've created products that make a difference in people's lives. Let these successes inspire you to keep innovating and exploring new possibilities."
+  },
+  {
+   "phase": "business",
+   "threshold": 70,
+   "title": "JOB WELL DONE!",
+   "header": "If you feal resistence your on the right track!",
+   "text": "You haven't just created products; you've also created business opportunities that are reshaping the global market. Keep thinking strategically and look for new ways to add value to your company and society as a whole."
+  },
+  {
+   "phase": null,
+   "threshold": 20,
+   "title": "JOB WELL DONE!",
+   "header": "If you feal resistence your on the right track!",
+   "text": "Your innovations have not only transformed businesses but also improved lives and made the world a better place. Keep striving for social impact and use your power to drive positive change."
+  }
+ ],
+ "tips": [
+  {
+   "title": "Open innovation",
+   "text": "Lego is one of the most succesfull exploiters of open innovation!"
+  },
+  {
+   "title": "Scenario planning",
+   "text": "Shell is great in scenario planning. They have a departmend dedicated to developing scneraios."
+  },
+  {
+   "title": "inspiration is key",
+   "text": "Creativity needs inspiration to flourish"
+  },
+  {
+   "title": "Reduce bridge to the core",
+   "text": "Make the organisation innovative and subject to change and not a \"department or team\""
+  },
+  {
+   "title": "Brainstorm techniques",
+   "text": "Brainstorm can be very impactfull when you really push yourself with proven techniques"
+  },
+  {
+   "title": "Innovative",
+   "text": "Researxch shows that finding people with the right innovation mindset is the hardest part of innovating"
+  },
+  {
+   "title": "101 methods of design",
+   "text": "This method book contains 101 innovation methods."
+  },
+  {
+   "title": "Strategyzer toolkit",
+   "text": "Strategyzer offers a lot of free tools on their website!"
+  }
+ ]
+}

@@ -33,3 +33,19 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def seeded(app):
+    from app.board import seed_actions
+
+    seed_actions()
+    return app
+
+
+def csrf_post(client, url, data=None, **kwargs):
+    """POST met een geldig CSRF-token, zoals een formulier uit de app dat doet."""
+    with client.session_transaction() as session:
+        session.setdefault("csrf_token", "test-token")
+        token = session["csrf_token"]
+    return client.post(url, data={**(data or {}), "csrf_token": token}, **kwargs)

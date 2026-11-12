@@ -1,0 +1,31 @@
+{% extends "app.html" %}
+
+{% block title %}Accounts – Thinkwave{% endblock %}
+
+{% block content %}
+<div class="two-col">
+  <section class="panel" aria-labelledby="acc-title">
+    <h1 id="acc-title">Accounts</h1>
+    <ul class="measure-list">
+      {% for user in users %}
+        <li><span>{{ user.email }}</span><strong>{{ 'Beheerder' if user.role.value == 'admin' else (user.team.name if user.team else 'Lid') }}</strong></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="panel" aria-labelledby="acc-new">
+    <h2 id="acc-new">Voeg een account toe</h2>
+    {% if error %}<p class="message message--error" role="alert">{{ error }}</p>{% endif %}
+    <form method="post" action="{{ url_for('admin.create_account') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field"><label for="a-email">E-mailadres</label><input id="a-email" name="email" type="email" required value="{{ form.email or '' }}"></div>
+      <div class="field"><label for="a-team">Team</label><input id="a-team" name="team" required maxlength="120" value="{{ form.team or '' }}"></div>
+      <div class="field">
+        <label for="a-password">Startwachtwoord</label>
+        <input id="a-password" name="password" type="password" required minlength="12" autocomplete="new-password" aria-describedby="a-hint">
+        <span class="field__hint" id="a-hint">Minimaal 12 tekens. Geef het persoonlijk door.</span>
+      </div>
+      <button class="button" type="submit">Maak account</button>
+    </form>
+  </section>
+</div>
+{% endblock %}
