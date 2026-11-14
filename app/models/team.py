@@ -2,9 +2,10 @@ from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import db
+from app.models.mixins import PublicIdMixin
 
 
-class Team(db.Model):
+class Team(PublicIdMixin, db.Model):
     """Een team binnen één organisatie. Gewone accounts zien alleen hun eigen team."""
 
     __tablename__ = "teams"

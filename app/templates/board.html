@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "_macros.html" import csrf %}
+{% block title %}{{ board.name }} · Thinkwave{% endblock %}
+{% block content %}
+<h1>{{ board.name }}</h1>
+<p class="muted">Team {{ board.team.name }} · <span class="badge">{{ EDITION_LABELS[board.edition.value] }}</span>
+  {% if not can_act %}· alleen meekijken{% endif %}</p>
+<div class="phases">
+  {% for phase in phases %}
+  <section class="phase phase-{{ phase.number }} card">
+    <h2>{{ phase.label }}</h2>
+    <progress value="{{ phase.done }}" max="{{ phase.total }}">{{ phase.done }} van {{ phase.total }}</progress>
+    <ul class="components">
+      {% for component in phase.components %}
+      <li class="component status-{{ component.status }}">
+        <span class="label">{{ component.label }}</span>
+        {% if component.status == 'todo' %}
+          {% if can_act %}
+          <form method="post" action="{{ url_for('boards.start', public_id=board.public_id) }}" class="inline">
+            {{ csrf() }}<input type="hidden" name="component_key" value="{{ component.key }}">
+            <button type="submit">Starten</button>
+          </form>
+          {% else %}<span class="status">nog niet gestart</span>{% endif %}
+        {% elif component.status == 'active' %}
+          <span class="status">bezig · {{ component.duration_text }}</span>
+          {% if can_act %}
+          <form method="post" action="{{ url_for('boards.complete', public_id=board.public_id, action_id=component.action_public_id) }}" class="inline">
+            {{ csrf() }}<button type="submit">Afronden</button>
+          </form>
+          {% endif %}
+        {% else %}
+          <span class="status">klaar · {{ component.duration_text }}</span>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

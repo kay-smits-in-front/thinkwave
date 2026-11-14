@@ -1,0 +1,51 @@
+/* Gedeelde opmaak. De thema's (youth/team/executive) zetten alleen kleuren en vorm. */
+:root {
+  --bg: #f6f7f9; --fg: #1d2330; --muted: #5d6677; --card: #ffffff; --line: #dfe3ea;
+  --accent: #2456d6; --accent-fg: #ffffff; --radius: 6px;
+  --phase-1: var(--accent); --phase-2: var(--accent); --phase-3: var(--accent); --phase-4: var(--accent);
+  --head-bg: var(--card); --head-fg: var(--fg); --font: system-ui, sans-serif; --head-font: var(--font);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); }
+h1, h2 { font-family: var(--head-font); line-height: 1.2; }
+a { color: var(--accent); }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1.25rem;
+  background: var(--head-bg); color: var(--head-fg); border-bottom: 1px solid var(--line); }
+.topbar a { color: inherit; }
+.brand { font-weight: 700; text-decoration: none; letter-spacing: .02em; }
+nav { display: flex; gap: 1rem; align-items: center; }
+main { max-width: 64rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1rem 1.25rem; margin: 0 0 1rem; }
+.narrow { max-width: 26rem; margin: 2rem auto; }
+.muted { color: var(--muted); }
+label { display: block; margin: .75rem 0; font-weight: 600; }
+input, select { display: block; width: 100%; margin-top: .25rem; padding: .5rem .6rem; font: inherit;
+  border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--fg); }
+button { font: inherit; cursor: pointer; padding: .45rem .9rem; border: 0; border-radius: var(--radius);
+  background: var(--accent); color: var(--accent-fg); }
+button.link { background: none; color: inherit; padding: 0; text-decoration: underline; }
+form.inline { display: inline; }
+form.row { display: flex; gap: .75rem; align-items: end; margin-top: .75rem; }
+form.row label { flex: 1; margin: 0; }
+.flash { padding: .6rem .9rem; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); }
+.flash-error { border-color: #c0392b; color: #8e2b20; }
+.field-error { color: #8e2b20; margin: -.4rem 0 .5rem; font-size: .9rem; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: .5rem .4rem; border-bottom: 1px solid var(--line); }
+.badge { display: inline-block; padding: 0 .5rem; border-radius: 999px; font-size: .8rem;
+  border: 1px solid var(--line); color: var(--muted); }
+.board-list { list-style: none; padding: 0; }
+.board-row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; padding: .4rem 0; }
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.phase { border-top: 4px solid var(--phase-1); }
+.phase-2 { border-top-color: var(--phase-2); } .phase-3 { border-top-color: var(--phase-3); }
+.phase-4 { border-top-color: var(--phase-4); }
+progress { width: 100%; height: .6rem; accent-color: var(--accent); }
+.components { list-style: none; padding: 0; margin: .75rem 0 0; }
+.component { display: flex; justify-content: space-between; align-items: center; gap: .5rem;
+  flex-wrap: wrap; padding: .5rem 0; border-top: 1px solid var(--line); }
+.component .label { font-weight: 600; }
+.status { color: var(--muted); font-size: .9rem; }
+.status-done .label::before { content: "✓ "; }
+.status-active .label::before { content: "● "; color: var(--accent); }

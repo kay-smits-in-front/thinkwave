@@ -1,0 +1,12 @@
+/* Jeugd: de speelse, kleurrijke variant. */
+:root {
+  --bg: #fff8e7; --accent: #ff5a5f; --accent-fg: #ffffff; --radius: 16px; --line: #f1d9a8;
+  --head-bg: linear-gradient(90deg, #ff5a5f, #ffb400, #00b894, #0984e3); --head-fg: #ffffff;
+  --phase-1: #ff5a5f; --phase-2: #ffb400; --phase-3: #00b894; --phase-4: #0984e3;
+  --font: "Trebuchet MS", system-ui, sans-serif;
+}
+.topbar { border-bottom: 0; }
+.brand { font-size: 1.25rem; }
+button { font-weight: 700; padding: .55rem 1.1rem; }
+.card { border-width: 2px; }
+.badge { background: #fff; border-color: var(--phase-2); color: #7a5a00; }

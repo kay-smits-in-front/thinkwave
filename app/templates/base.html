@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}Thinkwave{% endblock %}</title>
+  {% set active_theme = theme if theme in ['youth', 'team', 'executive'] else 'team' %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/' ~ active_theme ~ '.css') }}">
+</head>
+<body class="theme-{{ active_theme }}">
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('main.index') }}">Thinkwave</a>
+    {% if current_user.is_authenticated %}
+    <nav>
+      {% if current_user.role.value == 'admin' %}
+      <a href="{{ url_for('admin.overview') }}">Teams</a>
+      <a href="{{ url_for('admin.accounts_page') }}">Accounts</a>
+      {% else %}
+      <a href="{{ url_for('main.dashboard') }}">Mijn team</a>
+      {% endif %}
+      <form method="post" action="{{ url_for('auth.logout') }}" class="inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="link">Uitloggen</button>
+      </form>
+    </nav>
+    {% endif %}
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <p class="flash flash-{{ category }}" role="status">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% macro field(f) %}
+<label>{{ f.label.text }}
+  {{ f(autocomplete="off" if f.type != 'PasswordField' else "current-password") }}
+</label>
+{% for error in f.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+{% endmacro %}
+
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endmacro %}

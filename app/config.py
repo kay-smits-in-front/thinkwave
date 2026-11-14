@@ -1,9 +1,11 @@
 """Configuratie uit omgevingsvariabelen. Geen geheimen in de code."""
 
 from collections.abc import Mapping
+from datetime import timedelta
 
 MIN_SECRET_KEY_LENGTH = 32
 DEV_SECRET_KEY = "local-development-only-change-me"
+MAX_REQUEST_BYTES = 16_384  # Elke aanvraag is klein: formulieren met korte velden.
 
 
 def normalise_database_url(url: str) -> str:
@@ -29,7 +31,14 @@ def find_production_problems(environ: Mapping[str, str]) -> list[str]:
         problems.append("DATABASE_URL (PostgreSQL)")
     if not environ.get("TRUSTED_HOSTS", "").strip():
         problems.append("TRUSTED_HOSTS (komma-gescheiden hostnamen)")
+    if not environ.get("RATELIMIT_STORAGE_URI", "").startswith(("redis://", "rediss://")):
+        problems.append("RATELIMIT_STORAGE_URI (Redis, gedeeld tussen workers)")
     return problems
+
+
+def _hops(environ: Mapping[str, str]) -> int:
+    value = environ.get("TRUSTED_PROXY_HOPS", "0").strip()
+    return int(value) if value.isdigit() else 0
 
 
 def build_config(environ: Mapping[str, str]) -> dict[str, object]:
@@ -47,7 +56,14 @@ def build_config(environ: Mapping[str, str]) -> dict[str, object]:
         "SESSION_COOKIE_HTTPONLY": True,
         "SESSION_COOKIE_SAMESITE": "Lax",
         "SESSION_COOKIE_SECURE": production,
-        "MAX_CONTENT_LENGTH": 1_000_000,
+        # '__Host-' dwingt in de browser af: Secure, geen Domain, pad '/'.
+        "SESSION_COOKIE_NAME": "__Host-session" if production else "session",
+        "PERMANENT_SESSION_LIFETIME": timedelta(hours=8),
+        "MAX_CONTENT_LENGTH": MAX_REQUEST_BYTES,
+        "WTF_CSRF_TIME_LIMIT": 3600,
+        "RATELIMIT_STORAGE_URI": environ.get("RATELIMIT_STORAGE_URI", "memory://"),
+        "RATELIMIT_HEADERS_ENABLED": False,
+        "TRUSTED_PROXY_HOPS": _hops(environ),
     }
     hosts = [h.strip() for h in environ.get("TRUSTED_HOSTS", "").split(",") if h.strip()]
     if hosts:

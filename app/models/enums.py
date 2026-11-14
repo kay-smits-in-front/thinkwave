@@ -10,6 +10,21 @@ class Role(StrEnum):
     MEMBER = "member"
 
 
+class Edition(StrEnum):
+    """De drie varianten van het bord: dezelfde werking, andere uitstraling en doelgroep."""
+
+    YOUTH = "youth"
+    TEAM = "team"
+    EXECUTIVE = "executive"
+
+
+EDITION_LABELS: dict[Edition, str] = {
+    Edition.YOUTH: "Jeugd",
+    Edition.TEAM: "Management en team",
+    Edition.EXECUTIVE: "Directie",
+}
+
+
 class Plan(StrEnum):
     TEN = "ten"
     FIFTY = "fifty"

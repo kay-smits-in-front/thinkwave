@@ -1,0 +1,8 @@
+/* Directie: gedempt, donker kader, nadruk op overzicht. */
+:root {
+  --bg: #eef0f3; --accent: #1b2a41; --accent-fg: #ffffff; --head-bg: #1b2a41; --head-fg: #f2f2f2;
+  --phase-1: #1b2a41; --phase-2: #324a6d; --phase-3: #8a6d3b; --phase-4: #5d6677;
+  --head-font: Georgia, "Times New Roman", serif;
+}
+.card { box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+h1, h2 { letter-spacing: .01em; }

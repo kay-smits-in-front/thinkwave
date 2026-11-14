@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Mijn team · Thinkwave{% endblock %}
+{% block content %}
+<h1>{{ team.name }}</h1>
+{% if boards %}
+<ul class="board-list">
+  {% for board in boards %}
+  <li class="card"><a href="{{ url_for('boards.show_board', public_id=board.public_id) }}">{{ board.name }}</a>
+    <span class="badge">{{ EDITION_LABELS[board.edition.value] }}</span></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="muted">Je team heeft nog geen bord. Vraag je beheerder er een aan te maken.</p>
+{% endif %}
+{% endblock %}

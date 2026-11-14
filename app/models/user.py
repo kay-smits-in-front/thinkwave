@@ -1,18 +1,21 @@
+from flask_login import UserMixin
 from sqlalchemy import Boolean, CheckConstraint, ForeignKey, ForeignKeyConstraint, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
 from app.models.enums import Role, enum_column_type
+from app.models.mixins import PublicIdMixin
 
 MIN_PASSWORD_LENGTH = 12
+MAX_PASSWORD_LENGTH = 128  # Een grens voorkomt dat extreem lange wachtwoorden de server belasten.
 
 
 def normalise_email(email: str) -> str:
     return email.strip().lower()
 
 
-class User(db.Model):
+class User(PublicIdMixin, UserMixin, db.Model):
     """Beheerder (beheert accounts) of gewoon account (alleen inloggen, eigen team)."""
 
     __tablename__ = "users"
@@ -47,9 +50,15 @@ class User(db.Model):
     def _normalise_email(self, _key: str, value: str) -> str:
         return normalise_email(value)
 
+    def get_id(self) -> str:
+        """Flask-Login bewaart dit in de sessie; dat is de onzichtbare ID, niet het getal."""
+        return self.public_id
+
     def set_password(self, password: str) -> None:
-        if len(password) < MIN_PASSWORD_LENGTH:
-            raise ValueError(f"Wachtwoord moet minimaal {MIN_PASSWORD_LENGTH} tekens hebben.")
+        if not MIN_PASSWORD_LENGTH <= len(password) <= MAX_PASSWORD_LENGTH:
+            raise ValueError(
+                f"Wachtwoord moet {MIN_PASSWORD_LENGTH} tot {MAX_PASSWORD_LENGTH} tekens hebben."
+            )
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password: str) -> bool:

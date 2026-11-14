@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, csrf %}
+{% block title %}Inloggen · Thinkwave{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Inloggen</h1>
+  <form method="post" novalidate>
+    {{ csrf() }}
+    {{ field(form.email) }}
+    {{ field(form.password) }}
+    <button type="submit">Inloggen</button>
+  </form>
+  <p class="muted"><a href="{{ url_for('auth.request_admin') }}">Beheerdersaccount aanvragen</a></p>
+</section>
+{% endblock %}

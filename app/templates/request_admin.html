@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, csrf %}
+{% block title %}Beheerdersaccount aanvragen · Thinkwave{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Beheerdersaccount aanvragen</h1>
+  <p class="muted">Een beheerder voegt de accounts van zijn organisatie toe. Je aanvraag wordt eerst handmatig goedgekeurd.</p>
+  <form method="post" novalidate>
+    {{ csrf() }}
+    {{ field(form.email) }}
+    {{ field(form.password) }}
+    {{ field(form.organisation_name) }}
+    <button type="submit">Aanvragen</button>
+  </form>
+  <p class="muted"><a href="{{ url_for('auth.login') }}">Terug naar inloggen</a></p>
+</section>
+{% endblock %}

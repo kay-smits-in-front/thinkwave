@@ -7,6 +7,7 @@ GOOD_PRODUCTION = {
     "SECRET_KEY": "x" * 40,
     "DATABASE_URL": "postgres://user:pw@host/db",
     "TRUSTED_HOSTS": "thinkwave.example",
+    "RATELIMIT_STORAGE_URI": "redis://cache:6379",
 }
 
 
@@ -26,7 +27,7 @@ def test_production_with_good_settings_is_secure():
     assert config["SQLALCHEMY_DATABASE_URI"].startswith("postgresql+psycopg://")
 
 
-@pytest.mark.parametrize("missing", ["SECRET_KEY", "DATABASE_URL", "TRUSTED_HOSTS"])
+@pytest.mark.parametrize("missing", ["SECRET_KEY", "DATABASE_URL", "TRUSTED_HOSTS", "RATELIMIT_STORAGE_URI"])
 def test_production_refuses_to_start_without_setting(missing):
     environ = {k: v for k, v in GOOD_PRODUCTION.items() if k != missing}
     with pytest.raises(RuntimeError, match=missing):
@@ -37,3 +38,20 @@ def test_production_refuses_sqlite():
     environ = {**GOOD_PRODUCTION, "DATABASE_URL": "sqlite:///x.db"}
     with pytest.raises(RuntimeError, match="DATABASE_URL"):
         build_config(environ)
+
+
+def test_production_refuses_rate_limit_storage_in_memory():
+    environ = {**GOOD_PRODUCTION, "RATELIMIT_STORAGE_URI": "memory://"}
+    with pytest.raises(RuntimeError, match="RATELIMIT_STORAGE_URI"):
+        build_config(environ)
+
+
+def test_production_uses_host_prefixed_session_cookie_and_small_request_limit():
+    config = build_config(GOOD_PRODUCTION)
+    assert config["SESSION_COOKIE_NAME"] == "__Host-session"
+    assert config["MAX_CONTENT_LENGTH"] <= 16_384
+
+
+def test_proxy_hops_ignores_garbage():
+    assert build_config({"TRUSTED_PROXY_HOPS": "abc"})["TRUSTED_PROXY_HOPS"] == 0
+    assert build_config({"TRUSTED_PROXY_HOPS": "1"})["TRUSTED_PROXY_HOPS"] == 1

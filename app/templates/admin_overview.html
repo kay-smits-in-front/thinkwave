@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, csrf %}
+{% block title %}Teams · Thinkwave{% endblock %}
+{% block content %}
+<h1>Teams</h1>
+{% for team in teams %}
+<section class="card">
+  <h2>{{ team.name }}</h2>
+  <p class="muted">{{ team.member_count }} {{ 'lid' if team.member_count == 1 else 'leden' }}</p>
+  {% for board in team.boards %}
+  <div class="board-row">
+    <a href="{{ url_for('boards.show_board', public_id=board.public_id) }}">{{ board.name }}</a>
+    <span class="badge">{{ EDITION_LABELS[board.edition] }}</span>
+    <progress value="{{ board.done }}" max="{{ board.total }}">{{ board.done }} van {{ board.total }}</progress>
+    <span class="muted">{{ board.done }} klaar · {{ board.active }} bezig</span>
+  </div>
+  {% else %}<p class="muted">Nog geen bord.</p>{% endfor %}
+  <form method="post" action="{{ url_for('admin.rename_team', public_id=team.public_id) }}" class="row">
+    {{ csrf() }}
+    <label>Teamnaam wijzigen
+      <input type="text" name="name" maxlength="80" required autocomplete="off">
+    </label>
+    <button type="submit">Hernoemen</button>
+  </form>
+</section>
+{% else %}
+<p class="muted">Nog geen teams. Maak hieronder een bord aan of voeg een account toe.</p>
+{% endfor %}
+
+<section class="card">
+  <h2>Nieuw bord</h2>
+  <form method="post" action="{{ url_for('admin.create_board') }}">
+    {{ csrf() }}
+    {{ field(board_form.team_name) }}
+    {{ field(board_form.board_name) }}
+    <label>{{ board_form.edition.label.text }} {{ board_form.edition() }}</label>
+    <button type="submit">Bord aanmaken</button>
+  </form>
+</section>
+{% endblock %}
