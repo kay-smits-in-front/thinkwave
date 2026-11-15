@@ -32,7 +32,7 @@ De database dwingt twee regels zelf af: een gewoon account hoort altijd bij een 
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # app + tests
 cp .env.example .env
 flask --app wsgi db upgrade
 flask --app wsgi seed

@@ -5,6 +5,7 @@ from functools import wraps
 
 from flask import Blueprint, abort, g, redirect, render_template, request, session, url_for
 from sqlalchemy import select
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
 from app.models import User
@@ -13,8 +14,14 @@ from app.models.user import normalise_email
 auth_blueprint = Blueprint("auth", __name__)
 
 
+# Wordt gecontroleerd als het e-mailadres niet bestaat, zodat inloggen even lang duurt
+# en de responstijd niet verraadt welke adressen een account hebben.
+DUMMY_HASH = generate_password_hash("thinkwave-dummy-password")
+
+
 def log_in(user: User) -> None:
     session.clear()  # nieuwe sessie na inloggen tegen session fixation
+    session.permanent = True
     session["user_id"] = user.id
 
 
@@ -48,15 +55,18 @@ def admin_required(view: Callable) -> Callable:
 
 def find_user(email: str, password: str) -> User | None:
     """De actieve gebruiker bij deze gegevens, of None."""
-    user = db.session.scalar(select(User).filter_by(email=normalise_email(email)))
-    if user and user.is_active and user.check_password(password):
+    user = db.session.scalar(select(User).filter_by(email=normalise_email(email[:254])))
+    if user is None:
+        check_password_hash(DUMMY_HASH, password)
+        return None
+    if user.is_active and user.check_password(password):
         return user
     return None
 
 
 def safe_next(target: str | None) -> str:
     """Alleen doorsturen naar een pad op deze site, nooit naar een andere website."""
-    if target and target.startswith("/") and not target.startswith("//"):
+    if target and target.startswith("/") and not target.startswith("//") and "\\" not in target:
         return target
     return url_for("projects.list_projects")
 

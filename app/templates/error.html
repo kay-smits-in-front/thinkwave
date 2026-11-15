@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ code }} – Thinkwave{% endblock %}
+
+{% block body %}
+<div class="auth">
+  {% include "_brand.html" %}
+  <main id="main" class="auth__form">
+    <p class="eyebrow">Fout {{ code }}</p>
+    <h1>{{ message }}</h1>
+    <p class="card__switch"><a href="{{ url_for('auth.home') }}">Ga naar het begin</a></p>
+  </main>
+</div>
+{% endblock %}

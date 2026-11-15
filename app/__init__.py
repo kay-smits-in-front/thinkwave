@@ -3,6 +3,7 @@ from collections.abc import Mapping
 
 import click
 from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.config import build_config
 from app.extensions import db, migrate
@@ -26,7 +27,13 @@ def create_app(overrides: Mapping[str, object] | None = None) -> Flask:
     from app.health import health_blueprint
     from app.projects_views import projects_blueprint
     from app.registration_views import registration_blueprint
+    from app.security import init_security
 
+    if app.config.get("BEHIND_PROXY"):
+        # Render zet de echte bezoeker in X-Forwarded-For; zonder dit telt de rate limit het proxy-adres.
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+
+    init_security(app)  # rate limiting eerst: geen database-werk voor geweigerde verzoeken
     app.before_request(load_current_user)
     app.before_request(check_csrf)
     app.jinja_env.globals["csrf_token"] = csrf_token

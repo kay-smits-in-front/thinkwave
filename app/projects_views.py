@@ -1,7 +1,9 @@
 """Projecten en het bord. Gewone formulieren; HTMX (hx-boost) maakt ze vloeiend in de browser."""
 
+import math
+
 from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select
 
 from app import board
 from app.auth import login_required
@@ -51,6 +53,29 @@ def form_rating(name: str) -> int | None:
     return int(value) if value in {"1", "2", "3", "4", "5"} else None
 
 
+MAX_PROJECTS_PER_ORGANISATION = 200
+MAX_ITEMS_PER_PROJECT = 500  # ideeën, verslagen, checklistpunten en metingen, elk apart
+MAX_MEASUREMENT = 1_000_000_000  # een miljard: ruim genoeg voor budget, uren of aantallen
+
+
+def form_number(name: str) -> float | None:
+    """Een gewoon getal (komma of punt), zonder nan, oneindig of absurde waarden."""
+    raw = request.form.get(name, "").strip().replace(",", ".")[:20]
+    try:
+        value = float(raw)
+    except ValueError:
+        return None
+    return value if math.isfinite(value) and abs(value) <= MAX_MEASUREMENT else None
+
+
+def is_full(items: list) -> bool:
+    """Tegen spam en scripts: elk project heeft een plafond per soort gegevens."""
+    if len(items) < MAX_ITEMS_PER_PROJECT:
+        return False
+    flash(f"Dit project heeft het maximum van {MAX_ITEMS_PER_PROJECT} bereikt. Verwijder eerst iets.")
+    return True
+
+
 def form_weeks(name: str) -> int | None:
     """Duur in hele weken, 1 tot en met 104; anders None."""
     value = request.form.get(name, "")
@@ -80,6 +105,10 @@ def create_project():
     board_kind = request.form.get("board", Board.WORK)
     if not name or board_kind not in Board:
         flash("Geef het project een naam en kies een bord.")
+        return redirect(url_for("projects.list_projects"))
+    existing = select(func.count()).select_from(Project).filter_by(organisation_id=g.user.organisation_id)
+    if db.session.scalar(existing) >= MAX_PROJECTS_PER_ORGANISATION:
+        flash(f"Je organisatie heeft het maximum van {MAX_PROJECTS_PER_ORGANISATION} projecten bereikt.")
         return redirect(url_for("projects.list_projects"))
     project = Project(
         name=name,
@@ -188,6 +217,8 @@ def add_note(project_id: int):
     kind = request.form.get("kind", "")
     action = find_action(project, request.form.get("action_id", type=int))
     tab = "bord" if action else "ideeen"
+    if is_full(project.notes):
+        return back_to(project, tab, action.id if action else None)
     if not title or kind not in NoteKind:
         flash("Geef een titel op.")
         return back_to(project, tab, action.id if action else None)
@@ -203,7 +234,7 @@ def add_note(project_id: int):
 def add_checklist_item(project_id: int):
     project = get_project(project_id)
     text = form_text("text", 255)
-    if text:
+    if text and not is_full(project.checklist):
         db.session.add(ChecklistItem(project_id=project.id, text=text))
         db.session.commit()
     return back_to(project, "checklist")
@@ -226,12 +257,11 @@ def toggle_checklist_item(project_id: int, item_id: int):
 def add_measurement(project_id: int):
     project = get_project(project_id)
     kind = request.form.get("kind", "")
-    try:
-        value = float(request.form.get("value", "").replace(",", "."))
-    except ValueError:
-        value = None
+    value = form_number("value")
+    if is_full(project.measurements):
+        return back_to(project, "metingen")
     if kind not in MeasureKind or value is None:
-        flash("Kies wat je meet en vul een getal in.")
+        flash("Kies wat je meet en vul een getal in (maximaal een miljard).")
         return back_to(project, "metingen")
     db.session.add(
         Measurement(project_id=project.id, kind=MeasureKind(kind), value=value, note=form_text("note", 255))

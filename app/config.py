@@ -1,6 +1,7 @@
 """Configuratie uit omgevingsvariabelen. Geen geheimen in de code."""
 
 from collections.abc import Mapping
+from datetime import timedelta
 
 MIN_SECRET_KEY_LENGTH = 32
 DEV_SECRET_KEY = "local-development-only-change-me"
@@ -47,8 +48,11 @@ def build_config(environ: Mapping[str, str]) -> dict[str, object]:
         "SESSION_COOKIE_HTTPONLY": True,
         "SESSION_COOKIE_SAMESITE": "Lax",
         "SESSION_COOKIE_SECURE": production,
-        "MAX_CONTENT_LENGTH": 1_000_000,
+        "SESSION_COOKIE_NAME": "__Host-session" if production else "session",
+        "PERMANENT_SESSION_LIFETIME": timedelta(hours=12),  # na 12 uur opnieuw inloggen
+        "MAX_CONTENT_LENGTH": 64 * 1024,  # alleen tekstformulieren; grotere verzoeken worden geweigerd
     }
+    config["BEHIND_PROXY"] = production
     hosts = [h.strip() for h in environ.get("TRUSTED_HOSTS", "").split(",") if h.strip()]
     if hosts:
         config["TRUSTED_HOSTS"] = hosts

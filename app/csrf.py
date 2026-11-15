@@ -20,5 +20,5 @@ def check_csrf() -> None:
     if request.method != "POST":
         return
     sent = request.form.get(FIELD) or request.headers.get(HEADER, "")
-    if not secrets.compare_digest(sent, session.get(FIELD, "")):
-        abort(400, "Formulier verlopen. Laad de pagina opnieuw.")
+    if not secrets.compare_digest(sent.encode(), session.get(FIELD, "").encode()):  # bytes: ook niet-ASCII geeft 400, geen 500
+        abort(400)
