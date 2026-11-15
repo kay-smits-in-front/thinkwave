@@ -1,0 +1,84 @@
+  {% if selected %}
+    {% set left = uses_left(selected) %}
+    {% set close_url = url_for('projects.show_project', project_id=project.id) %}
+    <a class="task-backdrop" href="{{ close_url }}" hx-push-url="false" hx-select=".board-layout" hx-target=".board-layout" hx-swap="outerHTML" tabindex="-1" aria-hidden="true"></a>
+    <section class="task-window {{ selected.phase.value }}" role="dialog" aria-modal="true" aria-labelledby="task-title">
+      <div class="task-window__bar">
+        <p class="eyebrow">{{ selected.phase.value|capitalize }} · {{ left }} van {{ selected.max_uses }} keer over</p>
+        <a class="task-window__close" href="{{ close_url }}" hx-push-url="false" hx-select=".board-layout" hx-target=".board-layout" hx-swap="outerHTML" autofocus>Sluit</a>
+      </div>
+      {% if selected.image %}<img class="task-window__photo" src="{{ url_for('static', filename='actions/' ~ selected.image) }}" alt="" width="421" height="215">{% endif %}
+      <h2 id="task-title">{{ selected.name }}</h2>
+      <p>{{ selected.description }}</p>
+      {% if selected.url %}<p><a href="{{ selected.url }}" target="_blank" rel="noopener" hx-boost="false">Meer over deze methode</a></p>{% endif %}
+
+      <dl class="facts">
+        <div><dt>Standaardduur</dt><dd>{{ selected.duration_weeks }} weken</dd></div>
+        <div><dt>Impact</dt><dd>{{ impact_labels.get(selected.impact, selected.impact) }}</dd></div>
+        <div><dt>Nu waard</dt><dd>+{{ expected(selected) }}%</dd></div>
+        <div><dt>Volgende taak</dt><dd>{% if next_task %}<a href="{{ url_for('projects.show_project', project_id=project.id, actie=next_task.id) }}" hx-push-url="false" hx-select=".board-layout" hx-target=".board-layout" hx-swap="outerHTML">{{ next_task.name }}</a>{% else %}–{% endif %}</dd></div>
+      </dl>
+
+      {% if can_perform(selected) %}
+        <form class="task-window__perform" method="post" action="{{ url_for('projects.perform_action', project_id=project.id, action_id=selected.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="field">
+            <label for="perform-weeks">Duur in dit project (weken)</label>
+            <input id="perform-weeks" name="duration_weeks" type="number" min="1" max="104" value="{{ selected.duration_weeks }}" required>
+          </div>
+          <button class="button" type="submit">Voer taak uit</button>
+        </form>
+      {% else %}
+        <p class="empty">Deze taak is op of de tijdlijn is vol.</p>
+      {% endif %}
+
+      {% if task_steps %}
+        <h3>Uitgevoerd in dit project</h3>
+        {% for step in task_steps %}
+          <form class="log-row" method="post" action="{{ url_for('projects.update_step', project_id=project.id, step_id=step.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="tab" value="bord">
+            <input type="hidden" name="actie" value="{{ selected.id }}">
+            <div class="log-row__head"><strong>Week {{ step.start_week + 1 }}</strong><span>+{{ step.impact_percent }}%</span></div>
+            <div class="field">
+              <label for="tw-result-{{ step.id }}">Verslag: wat deed je en wat leverde het op?</label>
+              <textarea id="tw-result-{{ step.id }}" name="result" rows="3" maxlength="5000">{{ step.result }}</textarea>
+            </div>
+            <div class="log-row__foot">
+              <label for="tw-weeks-{{ step.id }}">Duur (weken)</label>
+              <input id="tw-weeks-{{ step.id }}" class="input-small" name="duration_weeks" type="number" min="1" max="104" value="{{ step.duration_weeks }}">
+              <label for="tw-rating-{{ step.id }}">Succes (1–5)</label>
+              <select id="tw-rating-{{ step.id }}" name="self_rating">
+                <option value="">–</option>
+                {% for n in range(1, 6) %}<option value="{{ n }}" {% if step.self_rating == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+              </select>
+              <button class="button button--small" type="submit">Sla op</button>
+            </div>
+          </form>
+        {% endfor %}
+      {% endif %}
+
+      <h3>Ideeën bij deze taak</h3>
+      {% for note in task_notes %}
+        <article class="note">
+          <p class="eyebrow">{{ 'Idee' if note.kind.value == 'idea' else 'Verslag' }} · {{ note.created_at.strftime('%d-%m-%Y') }}</p>
+          <h4>{{ note.title }}</h4>
+          {% if note.body %}<p class="note__body">{{ note.body }}</p>{% endif %}
+        </article>
+      {% else %}
+        <p class="empty">Nog geen ideeën of verslagen bij deze taak.</p>
+      {% endfor %}
+      <form method="post" action="{{ url_for('projects.add_note', project_id=project.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="action_id" value="{{ selected.id }}">
+        <fieldset class="field">
+          <legend>Soort</legend>
+          <label class="choice"><input type="radio" name="kind" value="idea" checked> Idee</label>
+          <label class="choice"><input type="radio" name="kind" value="report"> Verslag</label>
+        </fieldset>
+        <div class="field"><label for="tw-note-title">Titel</label><input id="tw-note-title" name="title" required maxlength="200"></div>
+        <div class="field"><label for="tw-note-body">Tekst</label><textarea id="tw-note-body" name="body" rows="3"></textarea></div>
+        <button class="button button--small" type="submit">Sla op</button>
+      </form>
+    </section>
+  {% endif %}
