@@ -8,7 +8,7 @@ from pathlib import Path
 from sqlalchemy import func, select
 
 from app.extensions import db
-from app.models import Action, Phase, Project, ProjectAction
+from app.models import Action, Board, Phase, Project, ProjectAction
 
 CONTENT_PATH = Path(__file__).parent / "content" / "board.json"
 
@@ -16,6 +16,8 @@ CONTENT_PATH = Path(__file__).parent / "content" / "board.json"
 MULTIPLIER_STEPS = [(5, 2.0), (10, 1.2), (20, 1.0), (30, 0.8), (40, 0.5)]
 FAR_MULTIPLIER = 0.2
 INTERMISSIONS = 3  # evaluatiemomenten op 1/4, 2/4 en 3/4 van de tijdlijn
+EDITABLE_FIELDS = ("name", "description", "duration_weeks")
+MAX_WEEKS = 104
 
 
 @cache
@@ -26,7 +28,8 @@ def load_content() -> dict:
 
 def seed_actions() -> int:
     """Zet de actiecatalogus uit board.json in de database. Bestaande namen worden bijgewerkt."""
-    existing = {action.name: action for action in db.session.scalars(select(Action))}
+    defaults = select(Action).where(Action.organisation_id.is_(None))
+    existing = {action.name: action for action in db.session.scalars(defaults)}
     for data in load_content()["actions"]:
         action = existing.get(data["name"]) or Action(name=data["name"])
         for key, value in data.items():
@@ -34,6 +37,36 @@ def seed_actions() -> int:
         db.session.add(action)
     db.session.commit()
     return len(load_content()["actions"])
+
+
+def default_actions() -> list[Action]:
+    return list(db.session.scalars(select(Action).where(Action.organisation_id.is_(None)).order_by(Action.id)))
+
+
+def organisation_actions(organisation_id: int) -> list[Action]:
+    """De standaardset, met de eigen versie van de organisatie waar die bestaat."""
+    copies = db.session.scalars(select(Action).filter_by(organisation_id=organisation_id))
+    by_base = {copy.base_action_id: copy for copy in copies}
+    return [by_base.get(action.id, action) for action in default_actions()]
+
+
+def catalog(project: Project) -> list[Action]:
+    """Taken op het bord van dit project. Het jeugdbord gebruikt altijd de standaardset."""
+    if project.board is Board.YOUTH:
+        return default_actions()
+    return organisation_actions(project.organisation_id)
+
+
+def editable_copy(action: Action, organisation_id: int) -> Action:
+    """De versie van de organisatie om te bewerken; maakt een kopie van de standaardtaak als dat nodig is."""
+    if action.organisation_id == organisation_id:
+        return action
+    copy = Action(organisation_id=organisation_id, base_action_id=action.id)
+    for column in Action.__table__.columns.keys():
+        if column not in {"id", "organisation_id", "base_action_id"}:
+            setattr(copy, column, getattr(action, column))
+    db.session.add(copy)
+    return copy
 
 
 def multiplier(phase_impact: float, sweetspot: int) -> float:
@@ -67,15 +100,15 @@ def can_perform(project: Project, action: Action) -> bool:
     return uses_left(project, action) > 0 and weeks_used(project) < project.total_weeks
 
 
-def perform(project: Project, action: Action) -> ProjectAction:
-    """Voer een stap uit: de impact wordt berekend op de stand van dit moment."""
+def perform(project: Project, action: Action, duration_weeks: int | None = None) -> ProjectAction:
+    """Voer een taak uit: de impact wordt berekend op de stand van dit moment."""
     if not can_perform(project, action):
-        raise ValueError("Deze stap kan niet meer: geen beurten of geen tijd over.")
+        raise ValueError("Deze taak kan niet meer: geen beurten of geen tijd over.")
     step = ProjectAction(
         project=project,
         action=action,
         start_week=weeks_used(project),
-        duration_weeks=action.duration_weeks,
+        duration_weeks=duration_weeks or action.duration_weeks,
         impact_percent=expected_impact(action, phase_impacts(project)),
     )
     db.session.add(step)
@@ -122,25 +155,26 @@ def ending(project: Project) -> Feedback | None:
 
 
 def average_ratings() -> dict[int, float]:
-    """Gemiddeld eigen oordeel per stap over alle projecten: de leerdata voor suggesties."""
+    """Gemiddeld eigen oordeel per standaardtaak over alle projecten: de leerdata voor suggesties."""
+    base_id = func.coalesce(Action.base_action_id, Action.id)
     rows = db.session.execute(
-        select(ProjectAction.action_id, func.avg(ProjectAction.self_rating))
+        select(base_id, func.avg(ProjectAction.self_rating))
+        .join(Action, ProjectAction.action_id == Action.id)
         .where(ProjectAction.self_rating.is_not(None))
-        .group_by(ProjectAction.action_id)
+        .group_by(base_id)
     )
     return {action_id: float(avg) for action_id, avg in rows}
 
 
-def suggest(project: Project, limit: int = 3) -> list[Action]:
+def suggest(project: Project, limit: int = 3, exclude: Action | None = None) -> list[Action]:
     """Volgende stappen: hoogste verwachte impact nu, bij gelijkspel wat anderen goed beoordeelden.
 
     shortcut: regels + gemiddelde beoordeling; vervang door een model zodra er genoeg afgeronde projecten zijn.
     """
     impacts = phase_impacts(project)
     ratings = average_ratings()
-    actions = db.session.scalars(select(Action)).all()
-    candidates = [a for a in actions if can_perform(project, a)]
-    candidates.sort(key=lambda a: (-expected_impact(a, impacts), -ratings.get(a.id, 0), a.id))
+    candidates = [a for a in catalog(project) if a is not exclude and can_perform(project, a)]
+    candidates.sort(key=lambda a: (-expected_impact(a, impacts), -ratings.get(a.base_id, 0), a.base_id))
     return candidates[:limit]
 
 

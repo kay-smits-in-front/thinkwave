@@ -1,0 +1,37 @@
+{% extends "app.html" %}
+
+{% block title %}Taken – Thinkwave{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <div>
+    <h1>Taken</h1>
+    {% if defaults %}
+      <p class="lead">Je wijzigt de <strong>standaardset</strong>: dit geldt voor alle organisaties die een taak niet zelf hebben aangepast, en voor het jeugdbord.</p>
+    {% else %}
+      <p class="lead">Pas titels, beschrijvingen en standaardduur aan voor het projectteam- en directiebord van je organisatie. Het jeugdbord blijft de standaardset gebruiken.</p>
+    {% endif %}
+  </div>
+  {% if g.user.is_platform_admin %}
+    <a class="button button--secondary button--small" href="{{ url_for('admin.list_tasks', standaard=None if defaults else '1') }}">
+      {{ 'Wijzig taken van mijn organisatie' if defaults else 'Wijzig de standaardset' }}
+    </a>
+  {% endif %}
+</header>
+
+<div class="task-table">
+  {% for action in actions %}
+    <form class="task-row {{ action.phase.value }}" id="taak-{{ action.base_id }}" method="post"
+          action="{{ url_for('admin.update_task', action_id=action.id, standaard='1' if defaults else None) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <p class="eyebrow">{{ action.phase.value|capitalize }}{% if action.organisation_id %} · aangepast{% endif %}</p>
+      <div class="task-row__fields">
+        <div class="field"><label for="name-{{ action.id }}">Titel</label><input id="name-{{ action.id }}" name="name" required maxlength="120" value="{{ action.name }}"></div>
+        <div class="field"><label for="weeks-{{ action.id }}">Weken</label><input id="weeks-{{ action.id }}" name="duration_weeks" type="number" min="1" max="{{ max_weeks }}" required value="{{ action.duration_weeks }}"></div>
+      </div>
+      <div class="field"><label for="desc-{{ action.id }}">Beschrijving</label><textarea id="desc-{{ action.id }}" name="description" rows="2">{{ action.description }}</textarea></div>
+      <button class="button button--small" type="submit" aria-label="Sla {{ action.name }} op">Sla op</button>
+    </form>
+  {% endfor %}
+</div>
+{% endblock %}

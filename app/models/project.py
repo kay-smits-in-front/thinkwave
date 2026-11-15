@@ -28,6 +28,7 @@ class Project(db.Model):
     self_rating: Mapped[int | None]  # eindoordeel 1-5, om succesvolle trajecten te herkennen
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
+    organisation: Mapped["Organisation"] = relationship()  # noqa: F821
     steps: Mapped[list["ProjectAction"]] = relationship(
         back_populates="project", order_by="ProjectAction.start_week", cascade="all, delete-orphan"
     )
@@ -83,6 +84,7 @@ class Note(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"), index=True)
     kind: Mapped[NoteKind] = mapped_column(enum_column_type(NoteKind))
+    action_id: Mapped[int | None] = mapped_column(ForeignKey("actions.id"), index=True)  # bij welke taak
     title: Mapped[str] = mapped_column(String(200))
     body: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)

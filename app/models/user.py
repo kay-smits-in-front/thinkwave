@@ -32,6 +32,8 @@ class User(db.Model):
     password_hash: Mapped[str] = mapped_column(String(255))
     role: Mapped[Role] = mapped_column(enum_column_type(Role), default=Role.MEMBER)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # Eigenaar van het platform: ziet en beheert alle organisaties. Alleen via `flask make-platform-admin`.
+    is_platform_admin: Mapped[bool] = mapped_column(Boolean, default=False)
     organisation_id: Mapped[int] = mapped_column(ForeignKey("organisations.id"), index=True)
     team_id: Mapped[int | None] = mapped_column(index=True, default=None)
 
@@ -54,3 +56,8 @@ class User(db.Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
+
+    @property
+    def is_manager(self) -> bool:
+        """Organisatie-beheerder of platform-admin."""
+        return self.role is Role.ADMIN or self.is_platform_admin

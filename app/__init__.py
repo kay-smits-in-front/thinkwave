@@ -1,6 +1,7 @@
 import os
 from collections.abc import Mapping
 
+import click
 from flask import Flask
 
 from app.config import build_config
@@ -37,5 +38,21 @@ def create_app(overrides: Mapping[str, object] | None = None) -> Flask:
     def seed_command() -> None:
         """Zet de actiecatalogus van het bord in de database."""
         print(f"{seed_actions()} acties bijgewerkt.")
+
+    @app.cli.command("make-platform-admin")
+    @click.argument("email")
+    def make_platform_admin(email: str) -> None:
+        """Geef een bestaand account de rol platform-admin (eigenaar van Thinkwave)."""
+        from sqlalchemy import select
+
+        from app.models import User
+        from app.models.user import normalise_email
+
+        user = db.session.scalar(select(User).filter_by(email=normalise_email(email)))
+        if user is None:
+            raise click.ClickException(f"Geen account met {email}. Registreer eerst.")
+        user.is_platform_admin = True
+        db.session.commit()
+        print(f"{user.email} is nu platform-admin.")
 
     return app

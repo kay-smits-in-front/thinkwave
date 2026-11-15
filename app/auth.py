@@ -7,7 +7,7 @@ from flask import Blueprint, abort, g, redirect, render_template, request, sessi
 from sqlalchemy import select
 
 from app.extensions import db
-from app.models import Role, User
+from app.models import User
 from app.models.user import normalise_email
 
 auth_blueprint = Blueprint("auth", __name__)
@@ -39,7 +39,7 @@ def admin_required(view: Callable) -> Callable:
     @wraps(view)
     @login_required
     def wrapped(*args, **kwargs):
-        if g.user.role is not Role.ADMIN:
+        if not g.user.is_manager:
             abort(403)
         return view(*args, **kwargs)
 

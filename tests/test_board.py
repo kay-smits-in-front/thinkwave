@@ -92,3 +92,40 @@ def test_rating_must_be_between_one_and_five(seeded):
         db.session.commit()
     db.session.rollback()
     assert db.session.get(ProjectAction, step.id).self_rating is None
+
+
+def test_duration_can_be_set_per_project(seeded):
+    project = make_project()
+    step = board.perform(project, action("Testing"), duration_weeks=3)
+    assert step.duration_weeks == 3
+    assert board.weeks_used(project) == 3
+
+
+def test_organisation_copy_replaces_default_on_work_board_only(seeded):
+    from app.models import Board
+
+    work = make_project()
+    original = action("Testing")
+    copy = board.editable_copy(original, work.organisation_id)
+    copy.name = "Gebruikerstest"
+    db.session.commit()
+
+    names = [a.name for a in board.catalog(work)]
+    assert "Gebruikerstest" in names and "Testing" not in names
+    assert len(names) == 36
+
+    youth = Project(name="Klas", organisation_id=work.organisation_id, board=Board.YOUTH)
+    db.session.add(youth)
+    db.session.commit()
+    assert "Testing" in [a.name for a in board.catalog(youth)]
+    assert board.editable_copy(copy, work.organisation_id) is copy  # geen tweede kopie
+
+
+def test_ratings_of_copies_count_for_the_default_task(seeded):
+    project = make_project()
+    copy = board.editable_copy(action("Business Plan"), project.organisation_id)
+    db.session.commit()
+    step = board.perform(project, copy)
+    step.self_rating = 5
+    db.session.commit()
+    assert board.average_ratings()[action("Business Plan").id] == 5.0

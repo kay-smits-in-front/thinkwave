@@ -10,7 +10,8 @@
    "description": "Interviewing an expert can provide you with the information you are longing for. Stick to the rules of conducting an interview. For more help, see this link!",
    "max_uses": 3,
    "url": "https://www.rug.nl/language-centre/develop-yourself/academic/spreken/interviewen/",
-   "image": "1.webp"
+   "image": "1.webp",
+   "icon": "supervisor_account.png"
   },
   {
    "name": "Innovation Knowhow",
@@ -22,7 +23,8 @@
    "description": "Boost your understanding of innovation! Books as : hollistic innovation management cover the whole past of how innovation has evolved.",
    "max_uses": 2,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "2.webp"
+   "image": "2.webp",
+   "icon": "unknown_document.png"
   },
   {
    "name": "End User Observation",
@@ -34,7 +36,8 @@
    "description": "Unleash innovation by connecting with your end user! Dive into their world, observe, and gather insights firsthand—preferably away from your desk. The game of innovation begins with understanding the players.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "3.webp"
+   "image": "3.webp",
+   "icon": "visibility.png"
   },
   {
    "name": "Review Literature",
@@ -46,7 +49,8 @@
    "description": "Master the art of literature research, just like at the university. Explore what's already been studied using Google Scholar, hit the library, or collaborate with students.",
    "max_uses": 2,
    "url": null,
-   "image": "4.webp"
+   "image": "4.webp",
+   "icon": "local_library.png"
   },
   {
    "name": "User Research",
@@ -58,7 +62,8 @@
    "description": "Methods: A/b testing , Surveys , observation, 101 methods of design contains a wide range of options, and there is way more.",
    "max_uses": 3,
    "url": null,
-   "image": "5.webp"
+   "image": "5.webp",
+   "icon": "person_search.png"
   },
   {
    "name": "Data Collection",
@@ -70,7 +75,8 @@
    "description": "Search for data collection, and build data sets, take bigger surveys that represent a sample group.",
    "max_uses": 2,
    "url": null,
-   "image": "6.webp"
+   "image": "6.webp",
+   "icon": "monitoring.png"
   },
   {
    "name": "Localize and Sustainability",
@@ -82,7 +88,8 @@
    "description": "Organizing entrepreneurship locally offers new entrepreneurial opportunities and can provide an original and sustainable market position. It can also be a real challenge.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "7.webp"
+   "image": "7.webp",
+   "icon": "where_to_vote.png"
   },
   {
    "name": "Talk to Customer",
@@ -94,7 +101,8 @@
    "description": "On repeat: Talk to your end user!! It is one of the few success factors of innovation that has been scientifically proven.",
    "max_uses": 3,
    "url": null,
-   "image": "8.webp"
+   "image": "8.webp",
+   "icon": "voice_selection.png"
   },
   {
    "name": "Student Research Project",
@@ -106,7 +114,8 @@
    "description": "Gather students. Reach out to educational organs and sign in for student projects, write internship opportunities and build a small team.",
    "max_uses": 3,
    "url": null,
-   "image": "9.webp"
+   "image": "9.webp",
+   "icon": "school.png"
   },
   {
    "name": "Ecosystem Mapping",
@@ -118,7 +127,8 @@
    "description": "Mapping your network and gathering insight into your reach.",
    "max_uses": 1,
    "url": null,
-   "image": "10.webp"
+   "image": "10.webp",
+   "icon": "join.png"
   },
   {
    "name": "Brainstorming",
@@ -130,7 +140,8 @@
    "description": "Weighing the power of your idea can only be done if you have chosen it from a set of possible options. Brainstorming comes with rules. Organize it with at least 4 players and stimulate each other. See",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "11.webp"
+   "image": "11.webp",
+   "icon": "neurology.png"
   },
   {
    "name": "Open Innovation",
@@ -142,7 +153,8 @@
    "description": "Building together will get you further. Look for opportunities to cooperate with already existing market players. quick and interesting read: Henry W. Chesborough , Why companies should have open business models.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "12.webp"
+   "image": "12.webp",
+   "icon": "model_training.png"
   },
   {
    "name": "Hackathon",
@@ -154,7 +166,8 @@
    "description": "Go bigger! Try to find a big group of creative and specialised people with different backgrounds. Use methods, long breaks, brainfood, inspiration and everything you can think of to end up with a creative and new concept for your organistion.",
    "max_uses": 2,
    "url": null,
-   "image": "13.webp"
+   "image": "13.webp",
+   "icon": "psychology.png"
   },
   {
    "name": "Biomimicry",
@@ -166,7 +179,8 @@
    "description": "Using biomimicry within your organisation could be your whole organisation. This can be very difficult extensive but also you can make it small. Look at nature and animals and find ways to copy the intelligence to implement it in your organisation.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "14.webp"
+   "image": "14.webp",
+   "icon": "energy_savings_leaf.png"
   },
   {
    "name": "7th Generation Storm",
@@ -178,7 +192,8 @@
    "description": "Look 7 generations ahead. Long term existense is gained by thinking about the future and looking far ahead. Imagine everything 7 generathions in to the future. An American way of organizing!",
    "max_uses": 1,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "15.webp"
+   "image": "15.webp",
+   "icon": "thunderstorm.png"
   },
   {
    "name": "4 Lenses of Innovation",
@@ -190,7 +205,8 @@
    "description": "Examine the innovation on the four lenses to get a feeling about the worth. Feasability, Viability, Desarability, Sustainability.",
    "max_uses": 2,
    "url": null,
-   "image": "16.webp"
+   "image": "16.webp",
+   "icon": "camera.png"
   },
   {
    "name": "Co-Creation Session",
@@ -202,7 +218,8 @@
    "description": "co-creation is hot topic, designing together, draw solutions, situations, problems and so on. Create new insight and visualize to see your potential!",
    "max_uses": 3,
    "url": null,
-   "image": "17.webp"
+   "image": "17.webp",
+   "icon": "diversity.png"
   },
   {
    "name": "Brainwriting",
@@ -214,7 +231,8 @@
    "description": "It is a well known and working brainstorm technique, also known as 6-3-5 method, to generate a lot of ideas.",
    "max_uses": 3,
    "url": null,
-   "image": "18.webp"
+   "image": "18.webp",
+   "icon": "edit_note.png"
   },
   {
    "name": "Launching Tested End-Product",
@@ -226,7 +244,8 @@
    "description": "launch the tested final product. The aim is to have a definitive product that could go to market or that could be used to obtain financing.",
    "max_uses": 1,
    "url": null,
-   "image": "19.webp"
+   "image": "19.webp",
+   "icon": "rocket_launch.png"
   },
   {
    "name": "Concept Drawing",
@@ -238,7 +257,8 @@
    "description": "Drawing is fun! Draw the concept so that it becomes clear what an MVP should look like.",
    "max_uses": 2,
    "url": null,
-   "image": "20.webp"
+   "image": "20.webp",
+   "icon": "stylus_note.png"
   },
   {
    "name": "Building MVP 1",
@@ -250,7 +270,8 @@
    "description": "Build it with Lego, have it 3D printed, create a low-code website. Make sure there is something 'tangible'.",
    "max_uses": 2,
    "url": null,
-   "image": "21.webp"
+   "image": "21.webp",
+   "icon": "union1.png"
   },
   {
    "name": "Building MVP 2",
@@ -262,7 +283,8 @@
    "description": "Build a new and improved concept. Improved is, new lay out, beter fit, cheaper, adapted to test results.",
    "max_uses": 2,
    "url": null,
-   "image": "22.webp"
+   "image": "22.webp",
+   "icon": "union2.png"
   },
   {
    "name": "Test Preparation",
@@ -274,7 +296,8 @@
    "description": "Prepare what you want to test in your MVP. reach out to your test group as quick as possible and prepare for non-response and all kind of situations. Strategyzer offers helpful tools.",
    "max_uses": 2,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "23.webp"
+   "image": "23.webp",
+   "icon": "lab_research.png"
   },
   {
    "name": "Reaching Out to Test Group",
@@ -286,7 +309,8 @@
    "description": "Approach the test group, make sure you start looking for the end user in time. It can be time-consuming to find respondents.",
    "max_uses": 2,
    "url": null,
-   "image": "24.webp"
+   "image": "24.webp",
+   "icon": "groups.png"
   },
   {
    "name": "Testing",
@@ -298,7 +322,8 @@
    "description": "Test, test, test! Use appropriate test methods.",
    "max_uses": 3,
    "url": null,
-   "image": "25.webp"
+   "image": "25.webp",
+   "icon": "labs.png"
   },
   {
    "name": "Concept Testing Week",
@@ -310,7 +335,8 @@
    "description": "It can be a very valuable and insightfull thing to divide your attention onto one subject for a whole week",
    "max_uses": 1,
    "url": null,
-   "image": "26.webp"
+   "image": "26.webp",
+   "icon": "date_range.png"
   },
   {
    "name": "Concept Testing with End User",
@@ -322,7 +348,8 @@
    "description": "Test again and ensure that relevant end users are now involved in the tests.",
    "max_uses": 3,
    "url": null,
-   "image": "27.webp"
+   "image": "27.webp",
+   "icon": "manage_accounts.png"
   },
   {
    "name": "Dragons Den",
@@ -334,7 +361,8 @@
    "description": "Pitch! Trust your story. Share your idea and get financing to go to market.",
    "max_uses": 1,
    "url": null,
-   "image": "28.webp"
+   "image": "28.webp",
+   "icon": "payments.png"
   },
   {
    "name": "Scenario Planning",
@@ -346,7 +374,8 @@
    "description": "Try to imagine some realistic scenarios. Do this by taking 2 extremes. It's going to be a success. And it's going to fail, I'm going to do this by outsourcing everything, and I'm going to do this by doing everything internally. This can hel you make decisions and prepare for the future.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "29.webp"
+   "image": "29.webp",
+   "icon": "tactic.png"
   },
   {
    "name": "First Customer",
@@ -358,7 +387,8 @@
    "description": "Love your problem and not your solution. The first customers are the ones who have experienced the struggle which you are solving. Look for ways to find your first customer and find the target groiup during this phase.",
    "max_uses": 2,
    "url": null,
-   "image": "30.webp"
+   "image": "30.webp",
+   "icon": "attach_money.png"
   },
   {
    "name": "Innovation Management",
@@ -370,7 +400,8 @@
    "description": "Strategyzer innovation management. Use strategyzer's tools to manage and maintain innovation in your organization. This model was created for large organizations but can also be used for SMEs with some minor changes.",
    "max_uses": 2,
    "url": null,
-   "image": "31.webp"
+   "image": "31.webp",
+   "icon": "folder_managed.png"
   },
   {
    "name": "Employee Search",
@@ -382,7 +413,8 @@
    "description": "You have something to offer! Approach colleges and students to collaborate on your innovation. Reach out to your network and gather people who believe as much as you do.",
    "max_uses": 3,
    "url": null,
-   "image": "32.webp"
+   "image": "32.webp",
+   "icon": "group_add.png"
   },
   {
    "name": "Reach Out to Network",
@@ -394,7 +426,8 @@
    "description": "Keep using your network. Approach old contacts and try to do as much together as possible. Don't be afraid of being rejected and continue to live in the network as much as possible.",
    "max_uses": 3,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "33.webp"
+   "image": "33.webp",
+   "icon": "network_node.png"
   },
   {
    "name": "Build a Website",
@@ -406,7 +439,8 @@
    "description": "Build your own website or outsource it, it offers a kind of trust point for both you and your customer or future customer. This is a home base for your company.",
    "max_uses": 2,
    "url": null,
-   "image": "34.webp"
+   "image": "34.webp",
+   "icon": "captive_portal.png"
   },
   {
    "name": "Kickstarter",
@@ -418,7 +452,8 @@
    "description": "Upload rour idea/plan and collect capital, please note that there must be a constructive plan to get started with capital.",
    "max_uses": 2,
    "url": "https://www.thinkwave.nl/info-wave",
-   "image": "35.webp"
+   "image": "35.webp",
+   "icon": "crowdsource.png"
   },
   {
    "name": "Business Plan",
@@ -430,7 +465,8 @@
    "description": "Write a concrete market and price placing and future proof business plan.",
    "max_uses": 2,
    "url": null,
-   "image": "36.webp"
+   "image": "36.webp",
+   "icon": "cases.png"
   }
  ],
  "intermissions": [

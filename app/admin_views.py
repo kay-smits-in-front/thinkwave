@@ -3,6 +3,7 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from sqlalchemy import func, select
 
+from app import board
 from app.auth import admin_required
 from app.extensions import db
 from app.models import Role, Team, User
@@ -68,3 +69,37 @@ def create_account():
         return render_template("accounts.html", users=users, error=str(error), form=form), 400
     flash(f"Account voor {form['email']} aangemaakt.")
     return redirect(url_for("admin.list_accounts"))
+
+
+def editing_defaults() -> bool:
+    """De platform-admin kan met ?standaard=1 de standaardset voor iedereen wijzigen."""
+    return g.user.is_platform_admin and request.values.get("standaard") == "1"
+
+
+@admin_blueprint.get("/taken")
+@admin_required
+def list_tasks():
+    defaults = editing_defaults()
+    actions = board.default_actions() if defaults else board.organisation_actions(g.user.organisation_id)
+    return render_template("tasks.html", actions=actions, defaults=defaults, max_weeks=board.MAX_WEEKS)
+
+
+@admin_blueprint.post("/taken/<int:action_id>")
+@admin_required
+def update_task(action_id: int):
+    """Titel, beschrijving en standaardduur van een taak wijzigen voor de eigen organisatie."""
+    defaults = editing_defaults()
+    allowed = board.default_actions() if defaults else board.organisation_actions(g.user.organisation_id)
+    action = next((a for a in allowed if a.id == action_id), None)
+    name = request.form.get("name", "").strip()[:120]
+    weeks = request.form.get("duration_weeks", "")
+    if action is None or not name or not weeks.isdigit() or not 1 <= int(weeks) <= board.MAX_WEEKS:
+        flash("Vul een titel en een duur van 1 tot 104 weken in.")
+        return redirect(url_for("admin.list_tasks", standaard="1" if defaults else None))
+    target = action if defaults else board.editable_copy(action, g.user.organisation_id)
+    target.name = name
+    target.description = request.form.get("description", "").strip()[:5000]
+    target.duration_weeks = int(weeks)
+    db.session.commit()
+    flash(f"{name} opgeslagen.")
+    return redirect(url_for("admin.list_tasks", standaard="1" if defaults else None) + f"#taak-{target.base_id}")

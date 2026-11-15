@@ -2,7 +2,7 @@
 
 {% block title %}Projecten – Thinkwave{% endblock %}
 
-{% set board_labels = {'youth': 'Jeugd – leren innoveren', 'work': 'Werk – teams, zzp en makers', 'management': 'Management – innovatie invoeren'} %}
+{% set board_labels = {'youth': 'Jeugd – leren innoveren', 'work': 'Projectteam – teams, zzp en makers', 'management': 'Management/directie – innovatie invoeren'} %}
 
 {% block content %}
 <div class="two-col">
@@ -15,7 +15,7 @@
             <a class="project-card" href="{{ url_for('projects.show_project', project_id=project.id) }}">
               <span class="project-card__board">{{ board_labels[project.board.value] }}</span>
               <span class="project-card__name">{{ project.name }}</span>
-              <span class="project-card__meta">{{ project.steps|length }} stappen gezet</span>
+              <span class="project-card__meta">{{ project.steps|length }} taken uitgevoerd{% if g.user.is_platform_admin %} · {{ project.organisation.name }}{% endif %}</span>
             </a>
           </li>
         {% endfor %}

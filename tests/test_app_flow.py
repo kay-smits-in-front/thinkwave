@@ -92,3 +92,66 @@ def test_admin_adds_member_who_sees_team_projects(client, seeded):
     csrf_post(client, "/inloggen", {"email": "lid@example.com", "password": PASSWORD})
     assert client.get("/beheer/accounts").status_code == 403
     assert client.get("/projecten").status_code == 200
+
+
+def test_task_window_shows_duration_notes_and_next_task(client, seeded):
+    register(client)
+    project = create_project(client, board="work")
+    talk = db.session.scalar(select(Action).filter_by(name="Talk to Customer"))
+    csrf_post(client, f"/projecten/{project.id}/acties/{talk.id}", {"duration_weeks": "2"})
+    csrf_post(client, f"/projecten/{project.id}/notities", {"kind": "report", "title": "Gesprek met klant", "action_id": str(talk.id)})
+    page = client.get(f"/projecten/{project.id}?actie={talk.id}").text
+    assert 'role="dialog"' in page
+    assert "Gesprek met klant" in page
+    assert 'name="duration_weeks"' in page
+    assert "Volgende taak" in page
+    db.session.refresh(project)
+    assert project.steps[0].duration_weeks == 2
+
+    step = project.steps[0]
+    csrf_post(client, f"/projecten/{project.id}/stappen/{step.id}", {"duration_weeks": "4", "tab": "bord", "actie": str(talk.id)})
+    db.session.refresh(step)
+    assert step.duration_weeks == 4
+
+
+def test_admin_deletes_project_member_cannot(client, seeded):
+    register(client)
+    keep = create_project(client, name="Blijft")
+    gone = create_project(client, name="Weg")
+    csrf_post(client, "/beheer/accounts", {"email": "lid@example.com", "team": "Team", "password": PASSWORD})
+    csrf_post(client, "/uitloggen")
+    csrf_post(client, "/inloggen", {"email": "lid@example.com", "password": PASSWORD})
+    assert csrf_post(client, f"/projecten/{keep.id}/verwijderen").status_code == 403
+
+    csrf_post(client, "/uitloggen")
+    csrf_post(client, "/inloggen", {"email": "kay@example.com", "password": PASSWORD})
+    csrf_post(client, f"/projecten/{gone.id}/verwijderen")
+    names = [p.name for p in db.session.scalars(select(Project))]
+    assert names == ["Blijft"]
+
+
+def test_admin_renames_task_for_own_organisation_only(client, seeded):
+    register(client)
+    testing = db.session.scalar(select(Action).filter_by(name="Testing", organisation_id=None))
+    csrf_post(client, f"/beheer/taken/{testing.id}", {"name": "Gebruikerstest", "duration_weeks": "3", "description": "Eigen tekst"})
+    project = create_project(client, board="management")
+    assert "Gebruikerstest" in client.get(f"/projecten/{project.id}").text
+
+    csrf_post(client, "/uitloggen")
+    register(client, org="Beta", email="b@example.com")
+    other = create_project(client, name="Ander", board="work")
+    page = client.get(f"/projecten/{other.id}").text
+    assert "Gebruikerstest" not in page and "Testing" in page
+
+
+def test_platform_admin_sees_projects_of_all_organisations(client, seeded, app):
+    register(client)
+    project = create_project(client, name="Van Acme")
+    csrf_post(client, "/uitloggen")
+    register(client, org="Thinkwave", email="owner@example.com")
+    assert client.get(f"/projecten/{project.id}").status_code == 404
+
+    result = app.test_cli_runner().invoke(args=["make-platform-admin", "owner@example.com"])
+    assert "platform-admin" in result.output
+    assert client.get(f"/projecten/{project.id}").status_code == 200
+    assert "Van Acme" in client.get("/projecten").text

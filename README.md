@@ -20,8 +20,11 @@ De inhoud van het bord staat in `app/content/board.json` (overgenomen uit de gep
 
 | Rol | Kan |
 |---|---|
-| Beheerder (`admin`) | Hoort bij een organisatie, voegt gewone accounts toe tot de limiet van het abonnement (10, 50 of onbeperkt) |
-| Gewoon account (`member`) | Alleen inloggen, ziet alleen het eigen team |
+| Platform-admin | Ziet en beheert alle organisaties en projecten, wijzigt de standaardset taken. Aanzetten: `flask --app wsgi make-platform-admin <e-mail>` |
+| Organisatie-beheerder (`admin`) | Maakt accounts aan (tot de limiet van het abonnement), wijzigt titels/taken/standaardduur voor de eigen organisatie, verwijdert projecten |
+| Gebruiker (`member`) | Werkt in de projecten van het eigen team, vult per taak duur, verslag en oordeel in |
+
+Het jeugdbord gebruikt altijd de standaardset taken. Projectteam- en directieborden gebruiken de versie van de organisatie.
 
 De database dwingt twee regels zelf af: een gewoon account hoort altijd bij een team, en dat team hoort bij dezelfde organisatie.
 
