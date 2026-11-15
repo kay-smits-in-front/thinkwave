@@ -6,6 +6,8 @@
   <title>{% block title %}Thinkwave{% endblock %}</title>
   <meta name="description" content="{% block description %}Thinkwave is de AI-innovatietool. Develop AI projects. Develop with AI.{% endblock %}">
   <meta name="theme-color" content="#082235">
+  {# HTMX toont standaard niets bij 4xx/5xx; onze foutpagina's (bijv. verkeerd wachtwoord) moeten wel verschijnen. #}
+  <meta name="htmx-config" content='{"responseHandling":[{"code":"204","swap":false},{"code":"...","swap":true}]}'>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='brand/logo-red.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
